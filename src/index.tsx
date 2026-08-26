@@ -24,6 +24,7 @@ import SiteHeader from "./components/siteHeader";
 import MoviesContextProvider from "./contexts/moviesContext";
 
 import TVShowsPage from "./pages/tvShowsPage";
+import TVShowDetailsPage from "./pages/tvShowDetailsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -75,6 +76,11 @@ const App = () => {
               element={<TVShowsPage />}
             />
             
+            <Route
+              path="/tvshows/:id"
+              element={<TVShowDetailsPage />}
+            />
+
             <Route
               path="*"
               element={<Navigate to="/" replace />}
