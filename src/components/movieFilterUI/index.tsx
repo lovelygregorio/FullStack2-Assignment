@@ -47,7 +47,7 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({ onFilterValuesChange, tit
                 Filter
             </Fab>
             <Drawer
-                anchor="left"
+                anchor="right"
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
             >
