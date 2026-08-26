@@ -19,6 +19,21 @@ export interface BaseMovieProps {
   favourite?: boolean;
   genre_ids?: number[];
 }
+export interface TVShowProps {
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path?: string | null;
+  first_air_date: string;
+  genre_ids?: number[];
+  vote_average: number;
+  vote_count?: number;
+  popularity?: number;
+  original_language?: string;
+  original_name?: string;
+  origin_country?: string[];
+}
 
 export interface BaseMovieListProps {
   movies: BaseMovieProps[];
@@ -80,4 +95,10 @@ export interface DiscoverMovies {
   total_pages: number;
   total_results: number;
   results: BaseMovieProps[];
+}
+export interface DiscoverTVShows {
+  page: number;
+  results: TVShowProps[];
+  total_pages: number;
+  total_results: number;
 }

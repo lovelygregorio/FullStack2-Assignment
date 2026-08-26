@@ -23,6 +23,8 @@ import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import SiteHeader from "./components/siteHeader";
 import MoviesContextProvider from "./contexts/moviesContext";
 
+import TVShowsPage from "./pages/tvShowsPage";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -69,9 +71,16 @@ const App = () => {
             />
 
             <Route
+              path="/tvshows"
+              element={<TVShowsPage />}
+            />
+            
+            <Route
               path="*"
               element={<Navigate to="/" replace />}
             />
+
+
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>
