@@ -30,7 +30,8 @@ const SiteHeader: React.FC = () => {
   const menuOptions = [
     { label: "Home", path: "/" },
     { label: "Favorites", path: "/movies/favourites" },
-    { label: "Upcoming", path: "/movies/upcoming" },
+    { label: "Upcoming Movies", path: "/movies/upcoming" },
+    { label: "TV Shows", path: "/tvshows" },
 
   ];
 
