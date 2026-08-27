@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 
 import { getTVShows, getTVGenres } from "../api/tmdb-api";
@@ -10,6 +10,7 @@ import useFiltering from "../hooks/useFiltering";
 
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+
 
 const TVShowsPage: React.FC = () => {
   const {
@@ -54,9 +55,24 @@ const TVShowsPage: React.FC = () => {
     filterFunction,
   } = useFiltering(filters);
 
+  const [sortOption, setSortOption] = useState("rating-desc");
   const displayedShows = data
-    ? filterFunction(data.results)
-    : [];
+  ? [...filterFunction(data.results)].sort((a, b) => {
+      if (sortOption === "rating-desc") {
+        return b.vote_average - a.vote_average;
+      }
+
+      if (sortOption === "rating-asc") {
+        return a.vote_average - b.vote_average;
+      }
+
+      if (sortOption === "name-asc") {
+        return a.name.localeCompare(b.name);
+      }
+
+      return 0;
+    })
+  : [];
 
 
   if (isLoading) {
@@ -111,6 +127,19 @@ const TVShowsPage: React.FC = () => {
       {genre.name}
     </MenuItem>
   ))}
+</TextField>
+
+
+<TextField
+  select
+  label="Sort"
+  value={sortOption}
+  onChange={(e) => setSortOption(e.target.value)}
+  sx={{ minWidth: 200, marginLeft: "20px" }}
+>
+  <MenuItem value="rating-desc">Rating: High to Low</MenuItem>
+  <MenuItem value="rating-asc">Rating: Low to High</MenuItem>
+  <MenuItem value="name-asc">Name: A to Z</MenuItem>
 </TextField>
 
     <Grid container spacing={3} sx={{ padding: "20px" }}>
