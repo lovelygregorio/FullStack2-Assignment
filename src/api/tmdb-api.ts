@@ -99,9 +99,9 @@ export const getUpcomingMovies = () => {
     });
 };
 
-export const getTVShows = () => {
+export const getTVShows = (page: number = 1) => {
   return fetch(
-    `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
   )
     .then((response) => {
       if (!response.ok)

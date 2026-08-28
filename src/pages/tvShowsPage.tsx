@@ -10,17 +10,20 @@ import useFiltering from "../hooks/useFiltering";
 
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import Pagination from "@mui/material/Pagination";
 
 
 const TVShowsPage: React.FC = () => {
+   const [page, setPage] = useState(1);
+   
   const {
     data,
     error,
     isLoading,
     isError,
   } = useQuery<DiscoverTVShows, Error>(
-    "tvShows",
-    getTVShows
+    ["tvShows", page],
+     () => getTVShows(page)
   );
     const {
   data: genreData,
@@ -149,6 +152,17 @@ const TVShowsPage: React.FC = () => {
         </Grid>
       ))}
     </Grid>
+
+    <Pagination
+  count={data?.total_pages || 1}
+  page={page}
+  onChange={(_event, value) => setPage(value)}
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "30px",
+  }}
+/>
   </>
 );
 };
