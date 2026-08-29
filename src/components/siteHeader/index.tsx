@@ -45,15 +45,53 @@ const SiteHeader: React.FC = () => {
 
   return (
     <>
-      <AppBar position="fixed" elevation={0} color="primary">
-        <Toolbar>
-          <Typography variant="h4" sx={styles.title}>
-            TMDB Client
+      <AppBar
+      position="fixed"
+      elevation={0}
+      sx={{
+        background: "rgba(15, 15, 20, 0.95)",
+        backdropFilter: "blur(10px)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
+      <Toolbar sx={{ minHeight: "72px" }}>
+        
+        <div style={{
+        display: "flex",
+        alignItems: "baseline",
+        gap: "12px",
+        flexGrow: 1,
+         }}
+      >
+
+        <Typography
+          variant="h4"
+          onClick={() => navigate("/")}
+          sx={{
+            fontWeight: 800,
+            letterSpacing: "1px",
+            cursor: "pointer",
+          }}
+        >
+          
+          LULU PRIME
+        </Typography>
+      
+          {!isMobile && (
+
+             <Typography
+            variant="caption"
+            sx={{
+              marginRight: 3,
+              opacity: 0.6,
+              letterSpacing: "1px",
+            }}
+          >
+           A Movie and TV Show Database App
           </Typography>
-          <Typography variant="h6" sx={styles.title}>
-            All you ever wanted to know about Movies!
-          </Typography>
-          {isMobile ? (
+        )}
+</div>
+        {isMobile ? (
             <>
               <IconButton
                 aria-label="menu"
@@ -65,25 +103,20 @@ const SiteHeader: React.FC = () => {
               >
                 <MenuIcon />
               </IconButton>
+
               <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={() => setAnchorEl(null)}
-              >
-                {menuOptions.map((opt) => (
-                  <MenuItem
-                    key={opt.label}
-                    onClick={() => handleMenuSelect(opt.path)}
+                 id="menu-appbar"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={() => setAnchorEl(null)}
+            >
+              {menuOptions.map((opt) => (
+                <MenuItem
+                  key={opt.label}
+                  onClick={() => {
+                    handleMenuSelect(opt.path);
+                    setAnchorEl(null);
+                  }}
                   >
                     {opt.label}
                   </MenuItem>
@@ -97,9 +130,17 @@ const SiteHeader: React.FC = () => {
                   key={opt.label}
                   color="inherit"
                   onClick={() => handleMenuSelect(opt.path)}
-                >
-                  {opt.label}
-                </Button>
+                  sx={{
+                  marginLeft: 1,
+                  textTransform: "none",
+                  fontWeight: 500,
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.08)",
+                  },
+                }}
+              >
+                {opt.label}
+              </Button>
               ))}
             </>
           )}

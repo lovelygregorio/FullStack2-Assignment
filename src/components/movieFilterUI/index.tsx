@@ -3,6 +3,7 @@ import FilterCard from "../filterMoviesCard";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import { BaseMovieProps } from "../../types/interfaces";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 export const titleFilter = (movie: BaseMovieProps, value: string): boolean => {
     return movie.title.toLowerCase().search(value.toLowerCase()) !== -1;
@@ -15,15 +16,23 @@ export const genreFilter = (movie: BaseMovieProps, value: string) => {
 };
 
 const styles = {
-    root: {
-        backgroundColor: "#bfbfbf",
+  fab: {
+    marginTop: 8,
+    position: "fixed",
+    top: 20,
+    right: 20,
+    backgroundColor: "#18181f",
+    color: "#ffffff",
+    border: "1px solid rgba(255,255,255,0.2)",
+    boxShadow: "none",
+    textTransform: "none",
+    fontWeight: 600,
+
+    "&:hover": {
+      backgroundColor: "#24242d",
+      boxShadow: "0 8px 20px rgba(0,0,0,0.35)",
     },
-    fab: {
-        marginTop: 8,
-        position: "fixed",
-        top: 20,
-        right: 2,
-    },
+  },
 };
 
 interface MovieFilterUIProps {
@@ -39,12 +48,12 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({ onFilterValuesChange, tit
     return (
         <>
             <Fab
-                color="secondary"
                 variant="extended"
                 onClick={() => setDrawerOpen(true)}
                 sx={styles.fab}
             >
-                Filter
+            <FilterListIcon sx={{ mr: 1 }} />
+                Filters
             </Fab>
             <Drawer
                 anchor="right"

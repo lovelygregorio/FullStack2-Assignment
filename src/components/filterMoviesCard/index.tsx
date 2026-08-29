@@ -27,16 +27,36 @@ interface FilterMoviesCardProps {
   titleFilter: string;
   genreFilter: string;
 }
-
 const styles = {
   root: {
-    maxWidth: 345,
+    width: 320,
+    backgroundColor: "#18181f",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: 0,
+    boxShadow: "none",
   },
 
   formControl: {
-    margin: 1,
-    minWidth: 220,
-    backgroundColor: "rgb(255, 255, 255)",
+    marginTop: 2,
+    width: "100%",
+
+    "& .MuiInputBase-root": {
+      backgroundColor: "#24242d",
+      color: "#ffffff",
+    },
+
+    "& .MuiInputLabel-root": {
+      color: "rgba(255,255,255,0.7)",
+    },
+
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#ffffff",
+    },
+
+    "& .MuiSvgIcon-root": {
+      color: "#ffffff",
+    },
   },
 };
 
@@ -93,15 +113,23 @@ const FilterMoviesCard: React.FC<
     <>
       <Card sx={styles.root} variant="outlined">
         <CardContent>
-          <Typography variant="h5" component="h1">
-            <FilterAltIcon fontSize="large" />
-            Filter the movies.
-          </Typography>
+         <Typography variant="h5" component="h1"
+         sx={{
+         fontWeight: 700,
+         display: "flex",
+         alignItems: "center",
+         gap: 1,
+         marginBottom: 2,
+        }}
+      >
+        <FilterAltIcon />
+              Find Movies
+        </Typography>
 
           <TextField
             sx={styles.formControl}
             id="filled-search"
-            label="Search field"
+            label="Search by title"
             type="search"
             value={titleFilter}
             variant="filled"
