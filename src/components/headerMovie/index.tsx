@@ -2,7 +2,7 @@ import React from "react";
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import HomeIcon from "@mui/icons-material/Home";
+
 import { MovieDetailsProps } from "../../types/interfaces"; 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Avatar from "@mui/material/Avatar";

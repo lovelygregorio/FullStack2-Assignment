@@ -7,18 +7,6 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-const styles = {
-    gridListRoot: {
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-around",
-    },
-    gridListTile: {
-        width: 450,
-        height: '100vh',
-    },
-};
-
 interface TemplateMoviePageProps {
     movie: MovieDetailsProps;
     children: React.ReactElement;
@@ -81,7 +69,7 @@ const visibleImages = images.slice(currentImage, currentImage + 3);
                 gap: "20px",
               }}
             >
-                {visibleImages.map((image, index) => (
+                {visibleImages.map((image) => (
                     <img
                         key={image.file_path}
                         src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
