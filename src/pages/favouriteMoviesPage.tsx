@@ -2,7 +2,7 @@ import React, { useContext, useState  } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
-import { getMovie } from "../api/tmdb-api";
+import { getMovie, getTVShow } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, {
@@ -11,7 +11,10 @@ import MovieFilterUI, {
 } from "../components/movieFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
-import { BaseMovieProps } from "../types/interfaces";
+import { BaseMovieProps, TVShowProps } from "../types/interfaces";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TVShowCard from "../components/tvShowCard";
 
 const titleFiltering = {
   name: "title",
@@ -26,7 +29,8 @@ const genreFiltering = {
 };
 
 const FavouriteMoviesPage: React.FC = () => {
-  const { favourites: movieIds } = useContext(MoviesContext);
+  const { favourites: movieIds, tvFavourites: tvShowIds } = useContext(MoviesContext);
+
   const [sortOption, setSortOption] = useState("rating-desc");
 
   const {
@@ -42,7 +46,18 @@ const FavouriteMoviesPage: React.FC = () => {
     }))
   );
 
+   const favouriteTVQueries = useQueries(
+    tvShowIds.map((showId) => ({
+      queryKey: ["tvShow", showId],
+      queryFn: () =>
+        getTVShow(showId.toString()),
+    }))
+  );
+
+
   const isLoading = favouriteMovieQueries.some(
+    (query) => query.isLoading
+  ) || favouriteTVQueries.some(
     (query) => query.isLoading
   );
 
@@ -55,6 +70,17 @@ const FavouriteMoviesPage: React.FC = () => {
     .filter(
       (movie): movie is BaseMovieProps => movie !== undefined
     );
+
+      const favouriteTVShows =
+    favouriteTVQueries
+      .map((query) => query.data)
+      .filter(
+        (
+          show
+        ): show is TVShowProps =>
+          show !== undefined
+      );
+
 
   const displayedMovies = [...filterFunction(allFavourites)].sort((a, b) => {
   if (sortOption === "rating-desc") {
@@ -100,6 +126,42 @@ const changeFilterValues = (
           </>
         )}
       />
+      
+      {favouriteTVShows.length > 0 && (
+        <div
+          style={{
+            backgroundColor: "#0f0f14",
+            color: "#ffffff",
+            padding: "20px",
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{
+              marginBottom: "20px",
+              fontWeight: 700,
+            }}
+          >
+            Favourite TV Shows
+          </Typography>
+
+          <Grid
+            container
+            spacing={2}
+          >
+            {favouriteTVShows.map(
+              (show) => (
+                <Grid item
+                  key={show.id} xs={12} sm={6} md={4} lg={2} xl={2}>
+                  <TVShowCard
+                    show={show}
+                  />
+                </Grid>
+              )
+            )}
+          </Grid>
+        </div>
+      )}
 
       <MovieFilterUI
          onFilterValuesChange={changeFilterValues}

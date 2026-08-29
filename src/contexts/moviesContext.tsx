@@ -1,26 +1,36 @@
 import React, { useCallback, useState } from "react";
-import { BaseMovieProps, Review } from "../types/interfaces";
+import { BaseMovieProps, Review,  TVShowProps } from "../types/interfaces";
 
 interface MovieContextInterface {
   favourites: number[];
   mustWatch: number[];
   myReviews: Record<number, Review>;
+  tvFavourites: number[];
 
   addToFavourites: (movie: BaseMovieProps) => void;
   removeFromFavourites: (movie: BaseMovieProps) => void;
+  
+  addTVToFavourites: (show: TVShowProps) => void;
+  removeTVFromFavourites: (show: TVShowProps) => void;
+  
   addToMustWatch: (movie: BaseMovieProps) => void;
   addReview: (movie: BaseMovieProps, review: Review) => void;
+  
+
 }
 
 const initialContextState: MovieContextInterface = {
   favourites: [],
   mustWatch: [],
   myReviews: {},
+  tvFavourites: [],
 
   addToFavourites: () => {},
   removeFromFavourites: () => {},
   addToMustWatch: () => {},
   addReview: () => {},
+  addTVToFavourites: () => {},
+  removeTVFromFavourites: () => {},
 };
 
 export const MoviesContext =
@@ -32,7 +42,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
   const [favourites, setFavourites] = useState<number[]>([]);
   const [mustWatch, setMustWatch] = useState<number[]>([]);
   const [myReviews, setMyReviews] = useState<Record<number, Review>>({});
-
+  const [tvFavourites, setTVFavourites] = useState<number[]>([]);
   const addToFavourites = useCallback((movie: BaseMovieProps) => {
     setFavourites((previousFavourites) => {
       if (previousFavourites.includes(movie.id)) {
@@ -42,6 +52,24 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
       return [...previousFavourites, movie.id];
     });
   }, []);
+
+const addTVToFavourites = useCallback((show: TVShowProps) => {
+  setTVFavourites((previousFavourites) => {
+    if (previousFavourites.includes(show.id)) {
+      return previousFavourites;
+    }
+
+    return [...previousFavourites, show.id];
+  });
+}, []);
+
+const removeTVFromFavourites = useCallback((show: TVShowProps) => {
+  setTVFavourites((previousFavourites) =>
+    previousFavourites.filter(
+      (showId) => showId !== show.id
+    )
+  );
+}, []);
 
   const removeFromFavourites = useCallback(
     (movie: BaseMovieProps) => {
@@ -85,10 +113,13 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
     <MoviesContext.Provider
       value={{
         favourites,
+         tvFavourites,
         mustWatch,
         myReviews,
         addToFavourites,
         removeFromFavourites,
+        addTVToFavourites,
+        removeTVFromFavourites,
         addToMustWatch,
         addReview,
       }}

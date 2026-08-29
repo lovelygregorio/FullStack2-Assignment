@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -14,30 +14,85 @@ import { Link } from "react-router-dom";
 import img from "../../images/film-poster-placeholder.png";
 import { TVShowProps } from "../../types/interfaces";
 
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import { MoviesContext } from "../../contexts/moviesContext";
+
 interface TVShowCardProps {
   show: TVShowProps;
 }
 
 const styles = {
   card: {
-    maxWidth: 345,
+    maxWidth: 350,
+    margin: "0 auto",
+    backgroundColor: "#18181f",
+    color: "#ffffff",
+    position: "relative",
+    transition: "transform 0.25s ease, box-shadow 0.25s ease",
+    zIndex: 1,
+    borderRadius: "14px",
+    overflow: "hidden",
+
+    "&:hover": {
+      transform: "scale(1.12)",
+      zIndex: 20,
+      boxShadow: "0 18px 40px rgba(0,0,0,0.75)",
+    },
+
+    "&:hover .hoverDetails": {
+      opacity: 1,
+      maxHeight: "140px",
+      marginTop: "10px",
+    },
   },
+
   media: {
-    height: 500,
+    height: 320,
+  },
+
+  hoverDetails: {
+    opacity: 0,
+    maxHeight: 0,
+    overflow: "hidden",
+    transition: "all 0.25s ease",
   },
 };
 
 const TVShowCard: React.FC<TVShowCardProps> = ({ show }) => {
-  return (
-    <Card sx={styles.card}>
-      <CardHeader
-        title={
-          <Typography variant="h5" component="p">
-            {show.name}
-          </Typography>
-        }
-      />
+  const {
+    tvFavourites,
+    addTVToFavourites,
+    removeTVFromFavourites,
+  } = useContext(MoviesContext);
 
+const isFavourite = tvFavourites.includes(show.id);
+  return (
+
+    <Card sx={styles.card}>
+     <CardHeader
+  avatar={
+    isFavourite ? (
+      <Avatar sx={{ backgroundColor: "red" }}>
+        <FavoriteIcon />
+      </Avatar>
+    ) : null
+  }
+  title={
+    <Typography
+      variant="body1"
+      component="p"
+      sx={{
+        fontWeight: 600,
+        fontSize: "0.9rem",
+      }}
+    >
+      {show.name}
+    </Typography>
+  }
+/>
+    
       <CardMedia
         sx={styles.media}
         image={
@@ -47,11 +102,10 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ show }) => {
         }
         title={show.name}
       />
-
-      <CardContent>
+         <CardContent>
         <Grid container>
           <Grid item xs={6}>
-            <Typography variant="h6" component="p">
+            <Typography variant="body2" component="p">
               <CalendarIcon fontSize="small" />{" "}
               {show.first_air_date}
             </Typography>
@@ -64,16 +118,58 @@ const TVShowCard: React.FC<TVShowCardProps> = ({ show }) => {
             </Typography>
           </Grid>
         </Grid>
+
+        <div
+          className="hoverDetails"
+          style={styles.hoverDetails}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              color: "rgba(255,255,255,0.75)",
+              lineHeight: 1.4,
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {show.overview}
+          </Typography>
+        </div>
       </CardContent>
 
       <CardActions disableSpacing>
-        <Button
-          component={Link}
-          to={`/tvshows/${show.id}`}
-          variant="outlined"
-          size="medium"
-          color="primary"
+     
+              <IconButton
+          onClick={() =>
+            isFavourite
+              ? removeTVFromFavourites(show)
+              : addTVToFavourites(show)
+          }
+          sx={{
+            color: isFavourite ? "#ff0000" : "#ffffff",
+          }}
         >
+          <FavoriteIcon />
+        </IconButton>
+
+
+        <Button
+        component={Link}
+        to={`/tvshows/${show.id}`}
+        variant="outlined"
+        size="small"
+        sx={{
+        color: "#ffffff",
+        borderColor: "#777777",
+
+        "&:hover": {
+        borderColor: "#ffffff",
+        backgroundColor: "rgba(255,255,255,0.08)",
+      },
+     }}
+  >
           More Info ...
         </Button>
       </CardActions>

@@ -8,8 +8,7 @@ import Grid from "@mui/material/Grid";
 import TVShowCard from "../components/tvShowCard";
 import useFiltering from "../hooks/useFiltering";
 
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
+import TVShowFilterUI from "../components/tvShowFilterUI";
 import Pagination from "@mui/material/Pagination";
 
 
@@ -52,29 +51,43 @@ const TVShowsPage: React.FC = () => {
   },
 ];
 
-  const {
-    filterValues,
-    setFilterValues,
-    filterFunction,
+  const { filterValues, setFilterValues, filterFunction,
   } = useFiltering(filters);
 
-  const [sortOption, setSortOption] = useState("rating-desc");
-  const displayedShows = data
-  ? [...filterFunction(data.results)].sort((a, b) => {
-      if (sortOption === "rating-desc") {
-        return b.vote_average - a.vote_average;
-      }
+  const changeFilterValues = ( type: "name" | "genre", value: string ) => {
+  const changedFilter = {
+    name: type,
+    value,
+  };
 
-      if (sortOption === "rating-asc") {
-        return a.vote_average - b.vote_average;
-      }
+  const updatedFilterSet =
+    type === "name"
+      ? [changedFilter, filterValues[1]]
+      : [filterValues[0], changedFilter];
 
-      if (sortOption === "name-asc") {
-        return a.name.localeCompare(b.name);
-      }
+  setFilterValues(updatedFilterSet);
+};
 
-      return 0;
-    })
+const [sortOption, setSortOption] = useState("rating-desc");
+
+const displayedShows = data
+  ? [...filterFunction(data.results)]
+      .slice(0, 18)
+      .sort((a, b) => {
+        if (sortOption === "rating-desc") {
+          return b.vote_average - a.vote_average;
+        }
+
+        if (sortOption === "rating-asc") {
+          return a.vote_average - b.vote_average;
+        }
+
+        if (sortOption === "name-asc") {
+          return a.name.localeCompare(b.name);
+        }
+
+        return 0;
+      })
   : [];
 
 
@@ -86,75 +99,28 @@ const TVShowsPage: React.FC = () => {
     return <h1>{error.message}</h1>;
   }
 
-
- return (
-  <>
+return (
+  <div
+    style={{
+      backgroundColor: "#0f0f14",
+      minHeight: "100vh",
+      padding: "20px",
+      color: "#ffffff",
+    }}
+  >
     <h1>TV Shows</h1>
 
 
-
-<input
-  type="text"
-  placeholder="Search TV shows"
-  value={filterValues[0].value}
-  onChange={(e) =>
-    setFilterValues([
-      {
-        ...filterValues[0],
-        value: e.target.value,
-      },
-      filterValues[1],
-    ])
-  }
-/>
-
-<TextField
-  select
-  label="Genre"
-  value={filterValues[1].value}
-  onChange={(e) =>
-    setFilterValues([
-      filterValues[0],
-      {
-        ...filterValues[1],
-        value: e.target.value,
-      },
-    ])
-  }
-  sx={{ minWidth: 200, marginLeft: "20px" }}
->
-  <MenuItem value="0">All Genres</MenuItem>
-
-  {genreData?.genres?.map((genre: { id: number; name: string }) => (
-    <MenuItem key={genre.id} value={genre.id.toString()}>
-      {genre.name}
-    </MenuItem>
-  ))}
-</TextField>
-
-
-<TextField
-  select
-  label="Sort"
-  value={sortOption}
-  onChange={(e) => setSortOption(e.target.value)}
-  sx={{ minWidth: 200, marginLeft: "20px" }}
->
-  <MenuItem value="rating-desc">Rating: High to Low</MenuItem>
-  <MenuItem value="rating-asc">Rating: Low to High</MenuItem>
-  <MenuItem value="name-asc">Name: A to Z</MenuItem>
-</TextField>
-
-    <Grid container spacing={3} sx={{ padding: "20px" }}>
+    <Grid container spacing={2} sx={{ padding: "20px 0" }}>
       {displayedShows.map((show: TVShowProps) => (
-        <Grid item key={show.id} xs={12} sm={6} md={4} lg={3}>
+        <Grid item key={show.id} xs={12} sm={6} md={4} lg={2} xl={2}>
           <TVShowCard show={show} />
         </Grid>
       ))}
     </Grid>
 
     <Pagination
-  count={data?.total_pages || 1}
+  count={Math.min(data?.total_pages ?? 1, 500)}
   page={page}
   onChange={(_event, value) => setPage(value)}
   sx={{
@@ -163,7 +129,16 @@ const TVShowsPage: React.FC = () => {
     marginBottom: "30px",
   }}
 />
-  </>
+
+<TVShowFilterUI
+  onFilterValuesChange={changeFilterValues}
+  titleFilter={filterValues[0].value}
+  genreFilter={filterValues[1].value}
+  sortOption={sortOption}
+  onSortChange={setSortOption}
+  genres={genreData?.genres ?? []}
+/>
+  </div>
 );
 };
 
