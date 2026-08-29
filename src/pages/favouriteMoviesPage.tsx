@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState  } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
@@ -27,6 +27,7 @@ const genreFiltering = {
 
 const FavouriteMoviesPage: React.FC = () => {
   const { favourites: movieIds } = useContext(MoviesContext);
+  const [sortOption, setSortOption] = useState("rating-desc");
 
   const {
     filterValues,
@@ -55,25 +56,38 @@ const FavouriteMoviesPage: React.FC = () => {
       (movie): movie is BaseMovieProps => movie !== undefined
     );
 
-  const displayedMovies = filterFunction(allFavourites);
+  const displayedMovies = [...filterFunction(allFavourites)].sort((a, b) => {
+  if (sortOption === "rating-desc") {
+    return b.vote_average - a.vote_average;
+  }
 
-  const changeFilterValues = (
-    type: string,
-    value: string
-  ) => {
-    const changedFilter = {
-      name: type,
-      value,
-    };
+  if (sortOption === "rating-asc") {
+    return a.vote_average - b.vote_average;
+  }
 
-    const updatedFilterSet =
-      type === "title"
-        ? [changedFilter, filterValues[1]]
-        : [filterValues[0], changedFilter];
+  if (sortOption === "title-asc") {
+    return a.title.localeCompare(b.title);
+  }
 
-    setFilterValues(updatedFilterSet);
+  return 0;
+});
+
+const changeFilterValues = (
+  type: string,
+  value: string
+) => {
+  const changedFilter = {
+    name: type,
+    value,
   };
 
+  const updatedFilterSet =
+    type === "title"
+      ? [changedFilter, filterValues[1]]
+      : [filterValues[0], changedFilter];
+
+  setFilterValues(updatedFilterSet);
+};
   return (
     <>
       <PageTemplate
@@ -88,9 +102,11 @@ const FavouriteMoviesPage: React.FC = () => {
       />
 
       <MovieFilterUI
-        onFilterValuesChange={changeFilterValues}
-        titleFilter={filterValues[0].value}
-        genreFilter={filterValues[1].value}
+         onFilterValuesChange={changeFilterValues}
+         titleFilter={filterValues[0].value}
+          genreFilter={filterValues[1].value}
+          sortOption={sortOption}
+          onSortChange={setSortOption}
       />
     </>
   );

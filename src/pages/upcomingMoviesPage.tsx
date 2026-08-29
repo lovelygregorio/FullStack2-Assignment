@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 
 import PageTemplate from "../components/templateMovieListPage";
@@ -13,6 +13,7 @@ import useFiltering from "../hooks/useFiltering";
 import { getUpcomingMovies } from "../api/tmdb-api";
 import { BaseMovieProps } from "../types/interfaces";
 
+
 const titleFiltering = {
   name: "title",
   value: "",
@@ -26,6 +27,8 @@ const genreFiltering = {
 };
 
 const UpcomingMoviesPage: React.FC = () => {
+  const [sortOption, setSortOption] = useState("rating-desc");
+
   const {
     data: movies,
     error,
@@ -50,7 +53,21 @@ const UpcomingMoviesPage: React.FC = () => {
     return <h1>{error.message}</h1>;
   }
 
-  const displayedMovies = filterFunction(movies ?? []);
+ const displayedMovies = [...filterFunction(movies)].sort((a, b) => {
+  if (sortOption === "rating-desc") {
+    return b.vote_average - a.vote_average;
+  }
+
+  if (sortOption === "rating-asc") {
+    return a.vote_average - b.vote_average;
+  }
+
+  if (sortOption === "title-asc") {
+    return a.title.localeCompare(b.title);
+  }
+
+  return 0;
+});
 
   const changeFilterValues = (
     type: string,
@@ -80,9 +97,11 @@ const UpcomingMoviesPage: React.FC = () => {
       />
 
       <MovieFilterUI
-        onFilterValuesChange={changeFilterValues}
-        titleFilter={filterValues[0].value}
-        genreFilter={filterValues[1].value}
+          onFilterValuesChange={changeFilterValues}
+          titleFilter={filterValues[0].value}
+          genreFilter={filterValues[1].value}
+          sortOption={sortOption}
+          onSortChange={setSortOption}
       />
     </>
   );

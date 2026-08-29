@@ -26,6 +26,8 @@ interface FilterMoviesCardProps {
   ) => void;
   titleFilter: string;
   genreFilter: string;
+  sortOption: string;
+  onSortChange: (value: string) => void;
 }
 const styles = {
   root: {
@@ -66,6 +68,8 @@ const FilterMoviesCard: React.FC<
   titleFilter,
   genreFilter,
   onUserInput,
+  sortOption,
+  onSortChange,
 }) => {
   const {
     data,
@@ -162,13 +166,50 @@ const FilterMoviesCard: React.FC<
       </Card>
 
       <Card sx={styles.root} variant="outlined">
-        <CardContent>
-          <Typography variant="h5" component="h1">
-            <SortIcon fontSize="large" />
-            Sort the movies.
-          </Typography>
-        </CardContent>
-      </Card>
+  <CardContent>
+    <Typography
+      variant="h5"
+      component="h1"
+      sx={{
+        fontWeight: 700,
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+        marginBottom: 2,
+      }}
+    >
+      <SortIcon />
+      Sort Movies
+    </Typography>
+
+    <FormControl sx={styles.formControl}>
+      <InputLabel id="sort-label">
+        Sort By
+      </InputLabel>
+
+      <Select
+        labelId="sort-label"
+        value={sortOption}
+        label="Sort By"
+        onChange={(event) =>
+          onSortChange(event.target.value)
+        }
+      >
+        <MenuItem value="rating-desc">
+          Rating: High to Low
+        </MenuItem>
+
+        <MenuItem value="rating-asc">
+          Rating: Low to High
+        </MenuItem>
+
+        <MenuItem value="title-asc">
+          Title: A-Z
+        </MenuItem>
+      </Select>
+    </FormControl>
+  </CardContent>
+</Card>
     </>
   );
 };
