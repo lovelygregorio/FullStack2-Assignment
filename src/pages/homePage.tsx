@@ -9,7 +9,7 @@ import MovieFilterUI, {
 import { BaseMovieProps, DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import AddToFavouritesIcon from '../components/cardIcons/addToFavourites';
+import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import Pagination from "@mui/material/Pagination";
 
 
@@ -26,11 +26,11 @@ const genreFiltering = {
 const HomePage: React.FC = () => {
   const [sortOption, setSortOption] = useState("rating-desc");
   const [page, setPage] = useState(1);
-  
+
   const { data, error, isLoading, isError } =
     useQuery<DiscoverMovies, Error>(["discover", page], () => getMovies(page));
-    
- const { filterValues, setFilterValues, filterFunction } = useFiltering(
+
+  const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [titleFiltering, genreFiltering]
   );
 
@@ -58,25 +58,25 @@ const HomePage: React.FC = () => {
 
     setFilterValues(updatedFilterSet);
   };
-const movies = data ? data.results.slice(0, 18) : [];
+  const movies = data ? data.results.slice(0, 18) : [];
 
-const displayedMovies = [...filterFunction(movies)].sort((a, b) => {
-  if (sortOption === "rating-desc") {
-    return b.vote_average - a.vote_average;
-  }
+  const displayedMovies = [...filterFunction(movies)].sort((a, b) => {
+    if (sortOption === "rating-desc") {
+      return b.vote_average - a.vote_average;
+    }
 
-  if (sortOption === "rating-asc") {
-    return a.vote_average - b.vote_average;
-  }
+    if (sortOption === "rating-asc") {
+      return a.vote_average - b.vote_average;
+    }
 
-  if (sortOption === "title-asc") {
-    return a.title.localeCompare(b.title);
-  }
+    if (sortOption === "title-asc") {
+      return a.title.localeCompare(b.title);
+    }
 
-  return 0;
-});
+    return 0;
+  });
 
-   return (
+  return (
     <>
       <PageTemplate
         title="Discover Movies"
@@ -86,26 +86,26 @@ const displayedMovies = [...filterFunction(movies)].sort((a, b) => {
         )}
       />
 
-       <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        padding: "25px",
-        backgroundColor: "#0f0f14",
-      }}
-    >
-      <Pagination
-        page={page}
-       count={Math.min(data?.total_pages ?? 1, 500)}
-        onChange={(_, value) => setPage(value)}
-        color="primary"
-        sx={{
-          "& .MuiPaginationItem-root": {
-            color: "#ffffff",
-          },
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          padding: "25px",
+          backgroundColor: "#0f0f14",
         }}
-      />
-    </div>
+      >
+        <Pagination
+          page={page}
+          count={Math.min(data?.total_pages ?? 1, 500)}
+          onChange={(_, value) => setPage(value)}
+          color="primary"
+          sx={{
+            "& .MuiPaginationItem-root": {
+              color: "#ffffff",
+            },
+          }}
+        />
+      </div>
 
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}

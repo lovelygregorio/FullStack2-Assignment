@@ -33,6 +33,8 @@ export interface TVShowProps {
   original_language?: string;
   original_name?: string;
   origin_country?: string[];
+  homepage?: string;
+  tagline?: string;
 }
 
 export interface BaseMovieListProps {

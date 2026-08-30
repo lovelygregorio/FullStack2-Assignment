@@ -107,10 +107,10 @@ const LandingPage: React.FC = () => {
           {topMovies.map((movie: BaseMovieProps) => (
             <Grid item xs={12} sm={6} md={4} lg={2} key={movie.id}>
               <MovieCard
-            movie={movie}
-              action={(movie: BaseMovieProps) => (
-            <AddToFavouritesIcon {...movie} />
-               )}
+                movie={movie}
+                action={(movie: BaseMovieProps) => (
+                  <AddToFavouritesIcon {...movie} />
+                )}
               />
             </Grid>
           ))}

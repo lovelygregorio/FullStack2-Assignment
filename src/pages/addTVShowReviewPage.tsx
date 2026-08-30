@@ -5,9 +5,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
-
-import { getTVShow,  getTVShowImages } from "../api/tmdb-api";
+import { getTVShow, getTVShowImages } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import TVShowReviewForm from "../components/tvShowReviewForm/index";
 import HeaderTVShow from "../components/headerTVShow";
@@ -30,7 +28,7 @@ const AddTVShowReviewPage: React.FC = () => {
     }
   );
 
-   const { data: images } = useQuery(
+  const { data: images } = useQuery(
     ["tvShowImages", tvShowId],
     () => getTVShowImages(tvShowId.toString()),
     {
@@ -51,7 +49,7 @@ const AddTVShowReviewPage: React.FC = () => {
     return <h2>Unable to load TV show.</h2>;
   }
 
-   const posters = images || [];
+  const posters = images || [];
 
 
   const visiblePosters = posters.slice(
@@ -77,15 +75,15 @@ const AddTVShowReviewPage: React.FC = () => {
 
   return (
     <Box
-        sx={{
-      backgroundColor: "#111111",
-      minHeight: "100vh",
-      color: "#ffffff",
-      padding: "40px",
-      paddingTop: "80px",
-    }}
-  >
-     <HeaderTVShow
+      sx={{
+        backgroundColor: "#111111",
+        minHeight: "100vh",
+        color: "#ffffff",
+        padding: "40px",
+        paddingTop: "80px",
+      }}
+    >
+      <HeaderTVShow
         name={show.name}
         homepage={show.homepage}
         tagline={show.tagline}

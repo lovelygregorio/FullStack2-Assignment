@@ -12,12 +12,11 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader: React.FC = () => {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement|null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
@@ -41,52 +40,49 @@ const SiteHeader: React.FC = () => {
   return (
     <>
       <AppBar
-      position="fixed"
-      elevation={0}
-      sx={{
-        background: "rgba(15, 15, 20, 0.95)",
-        backdropFilter: "blur(10px)",
-        borderBottom: "1px solid rgba(255,255,255,0.08)",
-      }}
-    >
-      <Toolbar sx={{ minHeight: "72px" }}>
-        
-        <div style={{
-        display: "flex",
-        alignItems: "baseline",
-        gap: "12px",
-        flexGrow: 1,
-         }}
+        position="fixed"
+        elevation={0}
+        sx={{
+          background: "rgba(15, 15, 20, 0.95)",
+          backdropFilter: "blur(10px)",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+        }}
       >
-
-        <Typography
-          variant="h4"
-          onClick={() => navigate("/")}
-          sx={{
-            fontWeight: 800,
-            letterSpacing: "1px",
-            cursor: "pointer",
-          }}
-        >
-          
-          LULU PRIME
-        </Typography>
-      
-          {!isMobile && (
-
-             <Typography
-            variant="caption"
-            sx={{
-              marginRight: 3,
-              opacity: 0.6,
-              letterSpacing: "1px",
+        <Toolbar sx={{ minHeight: "72px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: "12px",
+              flexGrow: 1,
             }}
           >
-           A Movie and TV Show Database App
-          </Typography>
-        )}
-</div>
-        {isMobile ? (
+            <Typography
+              variant="h4"
+              onClick={() => navigate("/")}
+              sx={{
+                fontWeight: 800,
+                letterSpacing: "1px",
+                cursor: "pointer",
+              }}
+            >
+              LULU PRIME
+            </Typography>
+
+            {!isMobile && (
+              <Typography
+                variant="caption"
+                sx={{
+                  marginRight: 3,
+                  opacity: 0.6,
+                  letterSpacing: "1px",
+                }}
+              >
+                A Movie and TV Show Database App
+              </Typography>
+            )}
+          </div>
+          {isMobile ? (
             <>
               <IconButton
                 aria-label="menu"
@@ -100,18 +96,18 @@ const SiteHeader: React.FC = () => {
               </IconButton>
 
               <Menu
-                 id="menu-appbar"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={() => setAnchorEl(null)}
-            >
-              {menuOptions.map((opt) => (
-                <MenuItem
-                  key={opt.label}
-                  onClick={() => {
-                    handleMenuSelect(opt.path);
-                    setAnchorEl(null);
-                  }}
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
+                {menuOptions.map((opt) => (
+                  <MenuItem
+                    key={opt.label}
+                    onClick={() => {
+                      handleMenuSelect(opt.path);
+                      setAnchorEl(null);
+                    }}
                   >
                     {opt.label}
                   </MenuItem>
@@ -126,16 +122,16 @@ const SiteHeader: React.FC = () => {
                   color="inherit"
                   onClick={() => handleMenuSelect(opt.path)}
                   sx={{
-                  marginLeft: 1,
-                  textTransform: "none",
-                  fontWeight: 500,
-                  "&:hover": {
-                    backgroundColor: "rgba(255,255,255,0.08)",
-                  },
-                }}
-              >
-                {opt.label}
-              </Button>
+                    marginLeft: 1,
+                    textTransform: "none",
+                    fontWeight: 500,
+                    "&:hover": {
+                      backgroundColor: "rgba(255,255,255,0.08)",
+                    },
+                  }}
+                >
+                  {opt.label}
+                </Button>
               ))}
             </>
           )}

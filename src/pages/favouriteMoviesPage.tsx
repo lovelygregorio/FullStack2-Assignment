@@ -1,4 +1,4 @@
-import React, { useContext, useState  } from "react";
+import React, { useContext, useState } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
@@ -48,7 +48,7 @@ const FavouriteMoviesPage: React.FC = () => {
     }))
   );
 
-   const favouriteTVQueries = useQueries(
+  const favouriteTVQueries = useQueries(
     tvShowIds.map((showId) => ({
       queryKey: ["tvShow", showId],
       queryFn: () =>
@@ -73,7 +73,7 @@ const FavouriteMoviesPage: React.FC = () => {
       (movie): movie is BaseMovieProps => movie !== undefined
     );
 
-      const favouriteTVShows =
+  const favouriteTVShows =
     favouriteTVQueries
       .map((query) => query.data)
       .filter(
@@ -85,37 +85,37 @@ const FavouriteMoviesPage: React.FC = () => {
 
 
   const displayedMovies = [...filterFunction(allFavourites)].sort((a, b) => {
-  if (sortOption === "rating-desc") {
-    return b.vote_average - a.vote_average;
-  }
+    if (sortOption === "rating-desc") {
+      return b.vote_average - a.vote_average;
+    }
 
-  if (sortOption === "rating-asc") {
-    return a.vote_average - b.vote_average;
-  }
+    if (sortOption === "rating-asc") {
+      return a.vote_average - b.vote_average;
+    }
 
-  if (sortOption === "title-asc") {
-    return a.title.localeCompare(b.title);
-  }
+    if (sortOption === "title-asc") {
+      return a.title.localeCompare(b.title);
+    }
 
-  return 0;
-});
+    return 0;
+  });
 
-const changeFilterValues = (
-  type: string,
-  value: string
-) => {
-  const changedFilter = {
-    name: type,
-    value,
+  const changeFilterValues = (
+    type: string,
+    value: string
+  ) => {
+    const changedFilter = {
+      name: type,
+      value,
+    };
+
+    const updatedFilterSet =
+      type === "title"
+        ? [changedFilter, filterValues[1]]
+        : [filterValues[0], changedFilter];
+
+    setFilterValues(updatedFilterSet);
   };
-
-  const updatedFilterSet =
-    type === "title"
-      ? [changedFilter, filterValues[1]]
-      : [filterValues[0], changedFilter];
-
-  setFilterValues(updatedFilterSet);
-};
   return (
     <>
       <PageTemplate
@@ -128,7 +128,7 @@ const changeFilterValues = (
           </>
         )}
       />
-      
+
       {favouriteTVShows.length > 0 && (
         <div
           style={{
@@ -156,15 +156,15 @@ const changeFilterValues = (
                 <Grid item
                   key={show.id} xs={12} sm={6} md={4} lg={2} xl={2}>
                   <TVShowCard
-              show={show}
-            showFavourite={false}
-              action={(show: TVShowProps) => (
-              <>
-            <RemoveTVFromFavourites {...show} />
-             <WriteTVReview {...show} />
-            </>
-          )}
-          />
+                    show={show}
+                    showFavourite={false}
+                    action={(show: TVShowProps) => (
+                      <>
+                        <RemoveTVFromFavourites {...show} />
+                        <WriteTVReview {...show} />
+                      </>
+                    )}
+                  />
                 </Grid>
               )
             )}
@@ -173,11 +173,11 @@ const changeFilterValues = (
       )}
 
       <MovieFilterUI
-         onFilterValuesChange={changeFilterValues}
-         titleFilter={filterValues[0].value}
-          genreFilter={filterValues[1].value}
-          sortOption={sortOption}
-          onSortChange={setSortOption}
+        onFilterValuesChange={changeFilterValues}
+        titleFilter={filterValues[0].value}
+        genreFilter={filterValues[1].value}
+        sortOption={sortOption}
+        onSortChange={setSortOption}
       />
     </>
   );
