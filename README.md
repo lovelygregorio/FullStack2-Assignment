@@ -2,6 +2,11 @@
 
 LULU PRIME is a React and TypeScript single-page application developed for the Full Stack Web Development 2 assignment.
 
+## Live Demo
+
+Application is deployed on Vercel
+https://luluprime.vercel.app/
+
 ## Project Origin
 
 This project is based on the Movies Fan App developed through the Full Stack Web Development 2 course labs. The lab application provided the foundation and core movie functionality used as the starting point for this assignment.
