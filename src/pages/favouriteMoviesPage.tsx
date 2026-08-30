@@ -15,6 +15,8 @@ import { BaseMovieProps, TVShowProps } from "../types/interfaces";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TVShowCard from "../components/tvShowCard";
+import RemoveTVFromFavourites from "../components/cardIcons/removeTVFromFavourites";
+import WriteTVReview from "../components/cardIcons/writeTVReview";
 
 const titleFiltering = {
   name: "title",
@@ -154,8 +156,15 @@ const changeFilterValues = (
                 <Grid item
                   key={show.id} xs={12} sm={6} md={4} lg={2} xl={2}>
                   <TVShowCard
-                    show={show}
-                  />
+              show={show}
+            showFavourite={false}
+              action={(show: TVShowProps) => (
+              <>
+            <RemoveTVFromFavourites {...show} />
+             <WriteTVReview {...show} />
+            </>
+          )}
+          />
                 </Grid>
               )
             )}

@@ -21,8 +21,9 @@ import { MoviesContext } from "../../contexts/moviesContext";
 
 interface TVShowCardProps {
   show: TVShowProps;
+  showFavourite?: boolean;
+  action?: (show: TVShowProps) => React.ReactNode;
 }
-
 const styles = {
   card: {
     maxWidth: 350,
@@ -60,7 +61,11 @@ const styles = {
   },
 };
 
-const TVShowCard: React.FC<TVShowCardProps> = ({ show }) => {
+const TVShowCard: React.FC<TVShowCardProps> = ({
+  show,
+  showFavourite = true,
+  action,
+}) => {
   const {
     tvFavourites,
     addTVToFavourites,
@@ -73,7 +78,7 @@ const isFavourite = tvFavourites.includes(show.id);
     <Card sx={styles.card}>
      <CardHeader
   avatar={
-    isFavourite ? (
+    showFavourite && isFavourite ? (
       <Avatar sx={{ backgroundColor: "red" }}>
         <FavoriteIcon />
       </Avatar>
@@ -140,7 +145,9 @@ const isFavourite = tvFavourites.includes(show.id);
       </CardContent>
 
       <CardActions disableSpacing>
-     
+
+             {action && action(show)}
+            {showFavourite && (
               <IconButton
           onClick={() =>
             isFavourite
@@ -153,7 +160,7 @@ const isFavourite = tvFavourites.includes(show.id);
         >
           <FavoriteIcon />
         </IconButton>
-
+      )}
 
         <Button
         component={Link}
