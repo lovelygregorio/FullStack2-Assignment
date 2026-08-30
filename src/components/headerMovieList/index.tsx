@@ -19,26 +19,26 @@ const styles = {
 };
 
 interface HeaderProps {
-    title: string;
+  title: string;
 }
 
 const Header: React.FC<HeaderProps> = (headerProps) => {
-    const title = headerProps.title
+  const title = headerProps.title;
 
-   return (
-  <Paper component="div" sx={styles.root}>
-    <Typography
-      variant="h4"
-      component="h3"
-      sx={{
-        fontWeight: 700,
-        letterSpacing: "0.5px",
-      }}
-    >
-      {title}
-    </Typography>
-  </Paper>
-);
+  return (
+    <Paper component="div" sx={styles.root}>
+      <Typography
+        variant="h4"
+        component="h2"
+        sx={{
+          fontWeight: 700,
+          letterSpacing: "0.5px",
+        }}
+      >
+        {title}
+      </Typography>
+    </Paper>
+  );
 };
 
 export default Header;

@@ -3,10 +3,9 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-import { MovieDetailsProps } from "../../types/interfaces"; 
+import { MovieDetailsProps } from "../../types/interfaces";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Avatar from "@mui/material/Avatar";
-
 
 const styles = {
   root: {
@@ -28,66 +27,65 @@ const styles = {
 };
 
 const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
-  const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
- const isFavourite = favourites.some(
-  (m: { id: number }) => m.id === movie.id
-);
+  const favouriteIds: number[] = JSON.parse(
+    localStorage.getItem("movieFavourites") || "[]",
+  );
 
+  const isFavourite = favouriteIds.includes(movie.id);
+  return (
+    <Paper component="div" sx={styles.root}>
+      {isFavourite && (
+        <Avatar sx={styles.avatar}>
+          <FavoriteIcon />
+        </Avatar>
+      )}
 
- return (
-  <Paper component="div" sx={styles.root}>
-    {isFavourite && (
-      <Avatar sx={styles.avatar}>
-        <FavoriteIcon />
-      </Avatar>
-    )}
-
-    <div>
-      <Typography
-        variant="h4"
-        component="h1"
-        sx={{
-          fontWeight: 700,
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-        }}
-      >
-        {movie.title}
-
-        {movie.homepage && (
-      <a
-          href={movie.homepage}
-          target="_blank"
-           rel="noreferrer"
-          style={{
-         color: "#ffffff",
-          fontSize: "14px",
-          textDecoration: "none",
-          marginLeft: "12px",
-          opacity: 0.7,
-    }}
-  >
-    Official Website 
-  </a>
-)}
-      </Typography>
-
-      {movie.tagline && (
+      <div>
         <Typography
-          variant="h6"
+          variant="h4"
+          component="h2"
           sx={{
-            marginTop: 0.5,
-            color: "rgba(255,255,255,0.65)",
-            fontStyle: "italic",
+            fontWeight: 700,
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
           }}
         >
-          {movie.tagline}
+          {movie.title}
+
+          {movie.homepage && (
+            <a
+              href={movie.homepage}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                color: "#ffffff",
+                fontSize: "14px",
+                textDecoration: "none",
+                marginLeft: "12px",
+                opacity: 0.7,
+              }}
+            >
+              Official Website
+            </a>
+          )}
         </Typography>
-      )}
-    </div>
-  </Paper>
-);
+
+        {movie.tagline && (
+          <Typography
+            variant="h6"
+            sx={{
+              marginTop: 0.5,
+              color: "rgba(255,255,255,0.65)",
+              fontStyle: "italic",
+            }}
+          >
+            {movie.tagline}
+          </Typography>
+        )}
+      </div>
+    </Paper>
+  );
 };
 
 export default MovieHeader;

@@ -47,9 +47,7 @@ const TVShowReviews: React.FC<TVShowReviewsProps> = (show) => {
                 {review.author}
               </TableCell>
 
-              <TableCell>
-                {excerpt(review.content)}
-              </TableCell>
+              <TableCell>{excerpt(review.content)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

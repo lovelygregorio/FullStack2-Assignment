@@ -66,38 +66,34 @@ const TVShowCard: React.FC<TVShowCardProps> = ({
   showFavourite = true,
   action,
 }) => {
-  const {
-    tvFavourites,
-    addTVToFavourites,
-    removeTVFromFavourites,
-  } = useContext(MoviesContext);
+  const { tvFavourites, addTVToFavourites, removeTVFromFavourites } =
+    useContext(MoviesContext);
 
-const isFavourite = tvFavourites.includes(show.id);
+  const isFavourite = tvFavourites.includes(show.id);
   return (
-
     <Card sx={styles.card}>
-     <CardHeader
-  avatar={
-    showFavourite && isFavourite ? (
-      <Avatar sx={{ backgroundColor: "red" }}>
-        <FavoriteIcon />
-      </Avatar>
-    ) : null
-  }
-  title={
-    <Typography
-      variant="body1"
-      component="p"
-      sx={{
-        fontWeight: 600,
-        fontSize: "0.9rem",
-      }}
-    >
-      {show.name}
-    </Typography>
-  }
-/>
-    
+      <CardHeader
+        avatar={
+          showFavourite && isFavourite ? (
+            <Avatar sx={{ backgroundColor: "red" }}>
+              <FavoriteIcon />
+            </Avatar>
+          ) : null
+        }
+        title={
+          <Typography
+            variant="body1"
+            component="p"
+            sx={{
+              fontWeight: 600,
+              fontSize: "0.9rem",
+            }}
+          >
+            {show.name}
+          </Typography>
+        }
+      />
+
       <CardMedia
         sx={styles.media}
         image={
@@ -107,27 +103,22 @@ const isFavourite = tvFavourites.includes(show.id);
         }
         title={show.name}
       />
-         <CardContent>
+      <CardContent>
         <Grid container>
           <Grid item xs={6}>
             <Typography variant="body2" component="p">
-              <CalendarIcon fontSize="small" />{" "}
-              {show.first_air_date}
+              <CalendarIcon fontSize="small" /> {show.first_air_date}
             </Typography>
           </Grid>
 
           <Grid item xs={6}>
             <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />{" "}
-              {show.vote_average}
+              <StarRateIcon fontSize="small" /> {show.vote_average}
             </Typography>
           </Grid>
         </Grid>
 
-        <div
-          className="hoverDetails"
-          style={styles.hoverDetails}
-        >
+        <div className="hoverDetails" style={styles.hoverDetails}>
           <Typography
             variant="body2"
             sx={{
@@ -145,38 +136,42 @@ const isFavourite = tvFavourites.includes(show.id);
       </CardContent>
 
       <CardActions disableSpacing>
-
-             {action && action(show)}
-            {showFavourite && (
-              <IconButton
-          onClick={() =>
-            isFavourite
-              ? removeTVFromFavourites(show)
-              : addTVToFavourites(show)
-          }
-          sx={{
-            color: isFavourite ? "#ff0000" : "#ffffff",
-          }}
-        >
-          <FavoriteIcon />
-        </IconButton>
-      )}
+        {action && action(show)}
+        {showFavourite && (
+          <IconButton
+            aria-label={
+              isFavourite
+                ? "remove TV show from favorites"
+                : "add TV show to favorites"
+            }
+            onClick={() =>
+              isFavourite
+                ? removeTVFromFavourites(show)
+                : addTVToFavourites(show)
+            }
+            sx={{
+              color: isFavourite ? "#ff0000" : "#ffffff",
+            }}
+          >
+            <FavoriteIcon />
+          </IconButton>
+        )}
 
         <Button
-        component={Link}
-        to={`/tvshows/${show.id}`}
-        variant="outlined"
-        size="small"
-        sx={{
-        color: "#ffffff",
-        borderColor: "#777777",
+          component={Link}
+          to={`/tvshows/${show.id}`}
+          variant="outlined"
+          size="small"
+          sx={{
+            color: "#ffffff",
+            borderColor: "#777777",
 
-        "&:hover": {
-        borderColor: "#ffffff",
-        backgroundColor: "rgba(255,255,255,0.08)",
-      },
-     }}
-  >
+            "&:hover": {
+              borderColor: "#ffffff",
+              backgroundColor: "rgba(255,255,255,0.08)",
+            },
+          }}
+        >
           More Info ...
         </Button>
       </CardActions>

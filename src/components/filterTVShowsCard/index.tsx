@@ -11,7 +11,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { SelectChangeEvent } from "@mui/material";
 
-
 type TVFilterOption = "name" | "genre";
 
 interface Genre {
@@ -19,16 +18,13 @@ interface Genre {
   name: string;
 }
 
-interface  FilterTVShowsCardProps  {
-  onUserInput: (
-    filterType: TVFilterOption,
-    value: string
-  ) => void;
+interface FilterTVShowsCardProps {
+  onUserInput: (filterType: TVFilterOption, value: string) => void;
   titleFilter: string;
   genreFilter: string;
   sortOption: string;
   onSortChange: (value: string) => void;
-   genres: Genre[];
+  genres: Genre[];
 }
 const styles = {
   root: {
@@ -63,25 +59,19 @@ const styles = {
   },
 };
 
-const FilterTVShowsCard: React.FC<
-  FilterTVShowsCardProps
-> = ({
+const FilterTVShowsCard: React.FC<FilterTVShowsCardProps> = ({
   titleFilter,
   genreFilter,
   onUserInput,
   sortOption,
   onSortChange,
-   genres,
+  genres,
 }) => {
-  const handleTextChange = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     onUserInput("name", event.target.value);
   };
 
-  const handleGenreChange = (
-    event: SelectChangeEvent
-  ) => {
+  const handleGenreChange = (event: SelectChangeEvent) => {
     onUserInput("genre", event.target.value);
   };
 
@@ -89,18 +79,20 @@ const FilterTVShowsCard: React.FC<
     <>
       <Card sx={styles.root} variant="outlined">
         <CardContent>
-         <Typography variant="h5" component="h1"
-         sx={{
-         fontWeight: 700,
-         display: "flex",
-         alignItems: "center",
-         gap: 1,
-         marginBottom: 2,
-        }}
-      >
-        <FilterAltIcon />
-              Find TV Shows
-        </Typography>
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              marginBottom: 2,
+            }}
+          >
+            <FilterAltIcon />
+            Find TV Shows
+          </Typography>
 
           <TextField
             sx={styles.formControl}
@@ -113,9 +105,7 @@ const FilterTVShowsCard: React.FC<
           />
 
           <FormControl sx={styles.formControl}>
-            <InputLabel id="genre-label">
-              Genre
-            </InputLabel>
+            <InputLabel id="genre-label">Genre</InputLabel>
 
             <Select
               labelId="genre-label"
@@ -124,13 +114,10 @@ const FilterTVShowsCard: React.FC<
               label="Genre"
               onChange={handleGenreChange}
             >
-                 <MenuItem value="0">All Genres</MenuItem>
+              <MenuItem value="0">All Genres</MenuItem>
 
               {genres.map((genre) => (
-                <MenuItem
-                  key={genre.id}
-                  value={genre.id.toString()}
-                >
+                <MenuItem key={genre.id} value={genre.id.toString()}>
                   {genre.name}
                 </MenuItem>
               ))}
@@ -140,50 +127,40 @@ const FilterTVShowsCard: React.FC<
       </Card>
 
       <Card sx={styles.root} variant="outlined">
-  <CardContent>
-    <Typography
-      variant="h5"
-      component="h1"
-      sx={{
-        fontWeight: 700,
-        display: "flex",
-        alignItems: "center",
-        gap: 1,
-        marginBottom: 2,
-      }}
-    >
-      <SortIcon />
-      Sort TV Shows
-    </Typography>
+        <CardContent>
+          <Typography
+            variant="h5"
+            component="h1"
+            sx={{
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              marginBottom: 2,
+            }}
+          >
+            <SortIcon />
+            Sort TV Shows
+          </Typography>
 
-    <FormControl sx={styles.formControl}>
-      <InputLabel id="sort-label">
-        Sort By
-      </InputLabel>
+          <FormControl sx={styles.formControl}>
+            <InputLabel id="sort-label">Sort By</InputLabel>
 
-      <Select
-        labelId="sort-label"
-        value={sortOption}
-        label="Sort By"
-        onChange={(event) =>
-          onSortChange(event.target.value)
-        }
-      >
-        <MenuItem value="rating-desc">
-          Rating: High to Low
-        </MenuItem>
+            <Select
+              labelId="sort-label"
+              value={sortOption}
+              label="Sort By"
+              onChange={(event) => onSortChange(event.target.value)}
+            >
+              <MenuItem value="rating-desc">Rating: High to Low</MenuItem>
 
-        <MenuItem value="rating-asc">
-          Rating: Low to High
-        </MenuItem>
+              <MenuItem value="rating-asc">Rating: Low to High</MenuItem>
 
-        <MenuItem value="name-asc">
-         Name: A-Z
-        </MenuItem>
-      </Select>
-    </FormControl>
-  </CardContent>
-</Card>
+              <MenuItem value="name-asc">Name: A-Z</MenuItem>
+            </Select>
+          </FormControl>
+        </CardContent>
+      </Card>
     </>
   );
 };

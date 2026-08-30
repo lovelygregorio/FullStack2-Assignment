@@ -26,7 +26,7 @@ interface TVShowDetailsProps {
 }
 
 const styles = {
-   detailsPanel: {
+  detailsPanel: {
     backgroundColor: "#18181f",
     color: "#ffffff",
     padding: "24px",
@@ -61,19 +61,19 @@ const styles = {
     border: "1px solid rgba(255,255,255,0.12)",
   },
   fab: {
-  position: "fixed",
-  top: 50,
-  right: 10,
-  backgroundColor: "#18181f",
-  color: "#ffffff",
-  border: "1px solid rgba(255,255,255,0.2)",
-  boxShadow: "none",
+    position: "fixed",
+    top: 50,
+    right: 10,
+    backgroundColor: "#18181f",
+    color: "#ffffff",
+    border: "1px solid rgba(255,255,255,0.2)",
+    boxShadow: "none",
 
-  "&:hover": {
-    backgroundColor: "#30303a",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.35)",
+    "&:hover": {
+      backgroundColor: "#30303a",
+      boxShadow: "0 8px 20px rgba(0,0,0,0.35)",
+    },
   },
-},
 };
 
 const TVShowDetails: React.FC<TVShowDetailsProps> = (show) => {
@@ -92,7 +92,9 @@ const TVShowDetails: React.FC<TVShowDetailsProps> = (show) => {
         Overview
       </Typography>
 
-      <Typography variant="body1" component="p"
+      <Typography
+        variant="body1"
+        component="p"
         sx={{
           color: "rgba(255,255,255,0.85)",
           lineHeight: 1.7,
@@ -104,11 +106,7 @@ const TVShowDetails: React.FC<TVShowDetailsProps> = (show) => {
 
       <Paper component="ul" sx={styles.chipSet}>
         <li>
-          <Chip
-            label="Genres"
-            sx={styles.genreLabel}
-            color="primary"
-          />
+          <Chip label="Genres" sx={styles.genreLabel} color="primary" />
         </li>
 
         {show.genres?.map((genre) => (
@@ -118,27 +116,26 @@ const TVShowDetails: React.FC<TVShowDetailsProps> = (show) => {
         ))}
       </Paper>
 
-      <Paper component="ul"  elevation={0} sx={{...styles.chipSet, 
-        borderTop: "1px solid rgba(255,255,255,0.1)",
+      <Paper
+        component="div"
+        elevation={0}
+        sx={{
+          ...styles.chipSet,
+          borderTop: "1px solid rgba(255,255,255,0.1)",
           marginTop: "8px",
           paddingTop: "18px",
-      }}>
+        }}
+      >
         <Chip
           icon={<StarRate />}
           label={`${show.vote_average} (${show.vote_count})`}
-           sx={styles.chip}
-        />
-
-        <Chip
-          label={`First aired: ${show.first_air_date}`}
           sx={styles.chip}
         />
 
+        <Chip label={`First aired: ${show.first_air_date}`} sx={styles.chip} />
+
         {show.number_of_seasons && (
-          <Chip
-            label={`Seasons: ${show.number_of_seasons}`}
-            sx={styles.chip}
-          />
+          <Chip label={`Seasons: ${show.number_of_seasons}`} sx={styles.chip} />
         )}
 
         {show.number_of_episodes && (
@@ -152,26 +149,24 @@ const TVShowDetails: React.FC<TVShowDetailsProps> = (show) => {
           <Chip label={`Status: ${show.status}`} sx={styles.chip} />
         )}
       </Paper>
- 
-        <Fab
-  variant="extended"
-  onClick={() => setDrawerOpen(true)}
-  sx={styles.fab}
->
-  <NavigationIcon sx={{ mr: 1 }} />
-  Reviews
-</Fab>
 
-<Drawer
-  anchor="top"
-  open={drawerOpen}
-  onClose={() => setDrawerOpen(false)}
->
-  <TVShowReviews id={show.id} />
-</Drawer>
+      <Fab
+        variant="extended"
+        onClick={() => setDrawerOpen(true)}
+        sx={styles.fab}
+      >
+        <NavigationIcon sx={{ mr: 1 }} />
+        Reviews
+      </Fab>
+
+      <Drawer
+        anchor="top"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
+        <TVShowReviews id={show.id} />
+      </Drawer>
     </Paper>
-
-        
   );
 };
 

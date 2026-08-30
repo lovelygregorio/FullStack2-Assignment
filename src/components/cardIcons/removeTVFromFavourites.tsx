@@ -5,7 +5,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { MoviesContext } from "../../contexts/moviesContext";
 import { TVShowProps } from "../../types/interfaces";
 
-
 const RemoveTVFromFavourites: React.FC<TVShowProps> = (show) => {
   const context = useContext(MoviesContext);
 
@@ -14,14 +13,14 @@ const RemoveTVFromFavourites: React.FC<TVShowProps> = (show) => {
     context.removeTVFromFavourites(show);
   };
 
-return (
-  <IconButton
-    aria-label="remove TV show from favorites"
-    onClick={onUserRequest}
-  >
-    <DeleteIcon color="primary" fontSize="large" />
-  </IconButton>
-);
+  return (
+    <IconButton
+      aria-label="remove TV show from favorites"
+      onClick={onUserRequest}
+    >
+      <DeleteIcon color="primary" fontSize="large" />
+    </IconButton>
+  );
 };
 
 export default RemoveTVFromFavourites;

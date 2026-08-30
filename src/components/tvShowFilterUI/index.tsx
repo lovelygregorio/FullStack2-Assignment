@@ -45,36 +45,35 @@ const TVShowFilterUI: React.FC<TVShowFilterUIProps> = ({
   sortOption,
   onSortChange,
   genres,
-}) => {  
-    
-    const [drawerOpen, setDrawerOpen] = useState(false);
+}) => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-    return (
-        <>
-            <Fab
-                variant="extended"
-                onClick={() => setDrawerOpen(true)}
-                sx={styles.fab}
-            >
-            <FilterListIcon sx={{ mr: 1 }} />
-                Filters
-            </Fab>
-            <Drawer
-                anchor="right"
-                open={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-            >
-                <FilterTVShowsCard
-                    onUserInput={onFilterValuesChange}
-                    titleFilter={titleFilter}
-                    genreFilter={genreFilter}
-                    sortOption={sortOption}
-                    onSortChange={onSortChange}
-                    genres={genres}
-                />
-            </Drawer>
-        </>
-    );
+  return (
+    <>
+      <Fab
+        variant="extended"
+        onClick={() => setDrawerOpen(true)}
+        sx={styles.fab}
+      >
+        <FilterListIcon sx={{ mr: 1 }} />
+        Filters
+      </Fab>
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
+        <FilterTVShowsCard
+          onUserInput={onFilterValuesChange}
+          titleFilter={titleFilter}
+          genreFilter={genreFilter}
+          sortOption={sortOption}
+          onSortChange={onSortChange}
+          genres={genres}
+        />
+      </Drawer>
+    </>
+  );
 };
 
 export default TVShowFilterUI;

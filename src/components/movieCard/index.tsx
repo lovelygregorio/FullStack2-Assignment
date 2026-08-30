@@ -21,7 +21,7 @@ interface MovieCardProps {
   movie: BaseMovieProps;
   action: (movie: BaseMovieProps) => React.ReactNode;
 }
- const styles = {
+const styles = {
   card: {
     maxWidth: 350,
     margin: "0 auto",
@@ -62,15 +62,10 @@ interface MovieCardProps {
   },
 };
 
-const MovieCard: React.FC<MovieCardProps> = ({
-  movie,
-  action,
-}) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
   const { favourites } = useContext(MoviesContext);
 
-  const isFavourite = favourites.some(
-    (movieId) => movieId === movie.id
-  );
+  const isFavourite = favourites.includes(movie.id);
 
   return (
     <Card sx={styles.card}>
@@ -78,13 +73,16 @@ const MovieCard: React.FC<MovieCardProps> = ({
         avatar={
           isFavourite ? (
             <Avatar sx={styles.avatar}>
-              <FavoriteIcon 
-            />
+              <FavoriteIcon />
             </Avatar>
           ) : null
         }
         title={
-          <Typography variant="body1" component="p" sx={{ fontWeight: 600, fontSize: "0.9rem" }}>
+          <Typography
+            variant="body1"
+            component="p"
+            sx={{ fontWeight: 600, fontSize: "0.9rem" }}
+          >
             {movie.title}
           </Typography>
         }
@@ -100,57 +98,55 @@ const MovieCard: React.FC<MovieCardProps> = ({
         title={movie.title}
       />
 
-     <CardContent>
-  <Grid container>
-    <Grid item xs={6}>
-      <Typography variant="body2" component="p">
-        <CalendarIcon fontSize="small" />{" "}
-        {movie.release_date}
-      </Typography>
-    </Grid>
+      <CardContent>
+        <Grid container>
+          <Grid item xs={6}>
+            <Typography variant="body2" component="p">
+              <CalendarIcon fontSize="small" /> {movie.release_date}
+            </Typography>
+          </Grid>
 
-    <Grid item xs={6}>
-      <Typography variant="h6" component="p">
-        <StarRateIcon fontSize="small" />{" "}
-        {movie.vote_average}
-      </Typography>
-    </Grid>
-  </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6" component="p">
+              <StarRateIcon fontSize="small" /> {movie.vote_average}
+            </Typography>
+          </Grid>
+        </Grid>
 
-  <div className="hoverDetails" style={styles.hoverDetails}>
-    <Typography
-      variant="body2"
-      sx={{
-        color: "rgba(255,255,255,0.75)",
-        lineHeight: 1.4,
-        display: "-webkit-box",
-        WebkitLineClamp: 3,
-        WebkitBoxOrient: "vertical",
-        overflow: "hidden",
-      }}
-    >
-      {movie.overview}
-    </Typography>
-  </div>
-</CardContent>
+        <div className="hoverDetails" style={styles.hoverDetails}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "rgba(255,255,255,0.75)",
+              lineHeight: 1.4,
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {movie.overview}
+          </Typography>
+        </div>
+      </CardContent>
 
       <CardActions disableSpacing>
         {action(movie)}
 
         <Button
-        variant="outlined"
-       size="small"
-       component={Link}
-      to={`/movies/${movie.id}`}
-        sx={{
-        color: "#ffffff",
-        borderColor: "#777777",
-        "&:hover": {
-           borderColor: "#ffffff",
-           backgroundColor: "rgba(255,255,255,0.08)",
-    },
-  }}
->
+          variant="outlined"
+          size="small"
+          component={Link}
+          to={`/movies/${movie.id}`}
+          sx={{
+            color: "#ffffff",
+            borderColor: "#777777",
+            "&:hover": {
+              borderColor: "#ffffff",
+              backgroundColor: "rgba(255,255,255,0.08)",
+            },
+          }}
+        >
           More Info ...
         </Button>
       </CardActions>

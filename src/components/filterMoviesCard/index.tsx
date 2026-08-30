@@ -13,17 +13,11 @@ import { SelectChangeEvent } from "@mui/material";
 import { useQuery } from "react-query";
 
 import { getGenres } from "../../api/tmdb-api";
-import {
-  FilterOption,
-  GenreData,
-} from "../../types/interfaces";
+import { FilterOption, GenreData } from "../../types/interfaces";
 import Spinner from "../spinner";
 
 interface FilterMoviesCardProps {
-  onUserInput: (
-    filterType: FilterOption,
-    value: string
-  ) => void;
+  onUserInput: (filterType: FilterOption, value: string) => void;
   titleFilter: string;
   genreFilter: string;
   sortOption: string;
@@ -62,23 +56,16 @@ const styles = {
   },
 };
 
-const FilterMoviesCard: React.FC<
-  FilterMoviesCardProps
-> = ({
+const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
   titleFilter,
   genreFilter,
   onUserInput,
   sortOption,
   onSortChange,
 }) => {
-  const {
-    data,
-    error,
-    isLoading,
-    isError,
-  } = useQuery<GenreData, Error>(
+  const { data, error, isLoading, isError } = useQuery<GenreData, Error>(
     "genres",
-    getGenres
+    getGenres,
   );
 
   if (isLoading) {
@@ -89,27 +76,17 @@ const FilterMoviesCard: React.FC<
     return <h1>{error.message}</h1>;
   }
 
-  const genres = [
-    { id: 0, name: "All" },
-    ...(data?.genres ?? []),
-  ];
+  const genres = [{ id: 0, name: "All" }, ...(data?.genres ?? [])];
 
-  const handleChange = (
-    type: FilterOption,
-    value: string
-  ) => {
+  const handleChange = (type: FilterOption, value: string) => {
     onUserInput(type, value);
   };
 
-  const handleTextChange = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     handleChange("title", event.target.value);
   };
 
-  const handleGenreChange = (
-    event: SelectChangeEvent
-  ) => {
+  const handleGenreChange = (event: SelectChangeEvent) => {
     handleChange("genre", event.target.value);
   };
 
@@ -117,18 +94,20 @@ const FilterMoviesCard: React.FC<
     <>
       <Card sx={styles.root} variant="outlined">
         <CardContent>
-         <Typography variant="h5" component="h1"
-         sx={{
-         fontWeight: 700,
-         display: "flex",
-         alignItems: "center",
-         gap: 1,
-         marginBottom: 2,
-        }}
-      >
-        <FilterAltIcon />
-              Find Movies
-        </Typography>
+          <Typography
+            variant="h5"
+            component="h1"
+            sx={{
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              marginBottom: 2,
+            }}
+          >
+            <FilterAltIcon />
+            Find Movies
+          </Typography>
 
           <TextField
             sx={styles.formControl}
@@ -141,9 +120,7 @@ const FilterMoviesCard: React.FC<
           />
 
           <FormControl sx={styles.formControl}>
-            <InputLabel id="genre-label">
-              Genre
-            </InputLabel>
+            <InputLabel id="genre-label">Genre</InputLabel>
 
             <Select
               labelId="genre-label"
@@ -153,10 +130,7 @@ const FilterMoviesCard: React.FC<
               onChange={handleGenreChange}
             >
               {genres.map((genre) => (
-                <MenuItem
-                  key={genre.id}
-                  value={genre.id.toString()}
-                >
+                <MenuItem key={genre.id} value={genre.id.toString()}>
                   {genre.name}
                 </MenuItem>
               ))}
@@ -166,50 +140,40 @@ const FilterMoviesCard: React.FC<
       </Card>
 
       <Card sx={styles.root} variant="outlined">
-  <CardContent>
-    <Typography
-      variant="h5"
-      component="h1"
-      sx={{
-        fontWeight: 700,
-        display: "flex",
-        alignItems: "center",
-        gap: 1,
-        marginBottom: 2,
-      }}
-    >
-      <SortIcon />
-      Sort Movies
-    </Typography>
+        <CardContent>
+          <Typography
+            variant="h5"
+            component="h1"
+            sx={{
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              marginBottom: 2,
+            }}
+          >
+            <SortIcon />
+            Sort Movies
+          </Typography>
 
-    <FormControl sx={styles.formControl}>
-      <InputLabel id="sort-label">
-        Sort By
-      </InputLabel>
+          <FormControl sx={styles.formControl}>
+            <InputLabel id="sort-label">Sort By</InputLabel>
 
-      <Select
-        labelId="sort-label"
-        value={sortOption}
-        label="Sort By"
-        onChange={(event) =>
-          onSortChange(event.target.value)
-        }
-      >
-        <MenuItem value="rating-desc">
-          Rating: High to Low
-        </MenuItem>
+            <Select
+              labelId="sort-label"
+              value={sortOption}
+              label="Sort By"
+              onChange={(event) => onSortChange(event.target.value)}
+            >
+              <MenuItem value="rating-desc">Rating: High to Low</MenuItem>
 
-        <MenuItem value="rating-asc">
-          Rating: Low to High
-        </MenuItem>
+              <MenuItem value="rating-asc">Rating: Low to High</MenuItem>
 
-        <MenuItem value="title-asc">
-          Title: A-Z
-        </MenuItem>
-      </Select>
-    </FormControl>
-  </CardContent>
-</Card>
+              <MenuItem value="title-asc">Title: A-Z</MenuItem>
+            </Select>
+          </FormControl>
+        </CardContent>
+      </Card>
     </>
   );
 };

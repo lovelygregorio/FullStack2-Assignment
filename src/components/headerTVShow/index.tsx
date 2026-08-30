@@ -28,11 +28,7 @@ const TVShowHeader: React.FC<TVShowHeaderProps> = ({
           gap: "15px",
         }}
       >
-        <Typography
-          variant="h4"
-          component="h2"
-          sx={{ fontWeight: 700 }}
-        >
+        <Typography variant="h4" component="h2" sx={{ fontWeight: 700 }}>
           {name}
         </Typography>
 

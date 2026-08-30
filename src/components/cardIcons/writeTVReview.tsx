@@ -11,10 +11,7 @@ const WriteTVReviewIcon: React.FC<TVShowProps> = (show) => {
         tvShowId: show.id,
       }}
     >
-      <RateReviewIcon
-        color="primary"
-        fontSize="large"
-      />
+      <RateReviewIcon color="primary" fontSize="large" />
     </Link>
   );
 };
