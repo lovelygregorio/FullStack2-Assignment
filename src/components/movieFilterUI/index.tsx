@@ -6,13 +6,13 @@ import { BaseMovieProps } from "../../types/interfaces";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
 export const titleFilter = (movie: BaseMovieProps, value: string): boolean => {
-    return movie.title.toLowerCase().search(value.toLowerCase()) !== -1;
+  return movie.title.toLowerCase().search(value.toLowerCase()) !== -1;
 };
 
 export const genreFilter = (movie: BaseMovieProps, value: string) => {
-    const genreId = Number(value);
-    const genreIds = movie.genre_ids;
-    return genreId > 0 && genreIds ? genreIds.includes(genreId) : true;
+  const genreId = Number(value);
+  const genreIds = movie.genre_ids;
+  return genreId > 0 && genreIds ? genreIds.includes(genreId) : true;
 };
 
 const styles = {
@@ -36,42 +36,47 @@ const styles = {
 };
 
 interface MovieFilterUIProps {
-    onFilterValuesChange: (f: string, s: string) => void;
-    titleFilter: string;
-    genreFilter: string;
-    sortOption: string;
-onSortChange: (value: string) => void;
+  onFilterValuesChange: (f: string, s: string) => void;
+  titleFilter: string;
+  genreFilter: string;
+  sortOption: string;
+  onSortChange: (value: string) => void;
 }
 
+const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
+  onFilterValuesChange,
+  titleFilter,
+  genreFilter,
+  sortOption,
+  onSortChange,
+}) => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-const MovieFilterUI: React.FC<MovieFilterUIProps> = ({ onFilterValuesChange, titleFilter, genreFilter, sortOption, onSortChange }) => {
-    const [drawerOpen, setDrawerOpen] = useState(false);
-
-    return (
-        <>
-            <Fab
-                variant="extended"
-                onClick={() => setDrawerOpen(true)}
-                sx={styles.fab}
-            >
-            <FilterListIcon sx={{ mr: 1 }} />
-                Filters
-            </Fab>
-            <Drawer
-                anchor="right"
-                open={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-            >
-                <FilterCard
-                    onUserInput={onFilterValuesChange}
-                    titleFilter={titleFilter}
-                    genreFilter={genreFilter}
-                    sortOption={sortOption}
-                    onSortChange={onSortChange}
-                />
-            </Drawer>
-        </>
-    );
+  return (
+    <>
+      <Fab
+        variant="extended"
+        onClick={() => setDrawerOpen(true)}
+        sx={styles.fab}
+      >
+        <FilterListIcon sx={{ mr: 1 }} />
+        Filters
+      </Fab>
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
+        <FilterCard
+          onUserInput={onFilterValuesChange}
+          titleFilter={titleFilter}
+          genreFilter={genreFilter}
+          sortOption={sortOption}
+          onSortChange={onSortChange}
+        />
+      </Drawer>
+    </>
+  );
 };
 
 export default MovieFilterUI;

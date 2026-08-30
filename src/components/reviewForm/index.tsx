@@ -1,8 +1,4 @@
-import React, {
-  useContext,
-  useState,
-  ChangeEvent,
-} from "react";
+import React, { useContext, useState, ChangeEvent } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,18 +6,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import {
-  useForm,
-  Controller,
-  SubmitHandler,
-} from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { MoviesContext } from "../../contexts/moviesContext";
-import {
-  BaseMovieProps,
-  Review,
-} from "../../types/interfaces";
+import { BaseMovieProps, Review } from "../../types/interfaces";
 import styles from "./styles";
 import ratings from "./ratingCategories";
 
@@ -48,9 +37,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
   const [open, setOpen] = useState(false);
 
   const handleRatingChange = (
-    event: ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
-    >
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setRating(Number(event.target.value));
   };
@@ -98,22 +85,14 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
         open={open}
         onClose={handleSnackClose}
       >
-        <Alert
-          severity="success"
-          variant="filled"
-          onClose={handleSnackClose}
-        >
+        <Alert severity="success" variant="filled" onClose={handleSnackClose}>
           <Typography variant="h4">
             Thank you for submitting a review
           </Typography>
         </Alert>
       </Snackbar>
 
-      <form
-        style={styles.form}
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
+      <form style={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
         <Controller
           name="author"
           control={control}
@@ -149,9 +128,9 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
           render={({ field }) => (
             <TextField
               {...field}
-               sx={{
-            ...styles.textField,
-              width: "100%",
+              sx={{
+                ...styles.textField,
+                width: "100%",
               }}
               variant="outlined"
               margin="normal"
@@ -186,10 +165,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
               helperText="Don't forget your rating"
             >
               {ratings.map((option) => (
-                <MenuItem
-                  key={option.value}
-                  value={option.value}
-                >
+                <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}

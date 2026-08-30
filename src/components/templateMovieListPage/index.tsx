@@ -8,7 +8,7 @@ const styles = {
   root: {
     backgroundColor: "#0f0f14",
     minHeight: "100vh",
-    color: "#3a3838",
+    color: "#ffffff",
     paddingBottom: "40px",
   },
 };

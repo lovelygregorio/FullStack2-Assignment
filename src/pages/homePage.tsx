@@ -12,7 +12,6 @@ import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import Pagination from "@mui/material/Pagination";
 
-
 const titleFiltering = {
   name: "title",
   value: "",
@@ -27,12 +26,15 @@ const HomePage: React.FC = () => {
   const [sortOption, setSortOption] = useState("rating-desc");
   const [page, setPage] = useState(1);
 
-  const { data, error, isLoading, isError } =
-    useQuery<DiscoverMovies, Error>(["discover", page], () => getMovies(page));
-
-  const { filterValues, setFilterValues, filterFunction } = useFiltering(
-    [titleFiltering, genreFiltering]
+  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
+    ["discover", page],
+    () => getMovies(page),
   );
+
+  const { filterValues, setFilterValues, filterFunction } = useFiltering([
+    titleFiltering,
+    genreFiltering,
+  ]);
 
   if (isLoading) {
     return <Spinner />;
@@ -42,10 +44,7 @@ const HomePage: React.FC = () => {
     return <h1>{error.message}</h1>;
   }
 
-  const changeFilterValues = (
-    type: string,
-    value: string
-  ) => {
+  const changeFilterValues = (type: string, value: string) => {
     const changedFilter = {
       name: type,
       value,
@@ -81,9 +80,7 @@ const HomePage: React.FC = () => {
       <PageTemplate
         title="Discover Movies"
         movies={displayedMovies}
-        action={(movie: BaseMovieProps) => (
-          <AddToFavouritesIcon {...movie} />
-        )}
+        action={(movie: BaseMovieProps) => <AddToFavouritesIcon {...movie} />}
       />
 
       <div

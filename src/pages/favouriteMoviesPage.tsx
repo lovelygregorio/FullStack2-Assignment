@@ -31,37 +31,33 @@ const genreFiltering = {
 };
 
 const FavouriteMoviesPage: React.FC = () => {
-  const { favourites: movieIds, tvFavourites: tvShowIds } = useContext(MoviesContext);
+  const { favourites: movieIds, tvFavourites: tvShowIds } =
+    useContext(MoviesContext);
 
   const [sortOption, setSortOption] = useState("rating-desc");
 
-  const {
-    filterValues,
-    setFilterValues,
-    filterFunction,
-  } = useFiltering([titleFiltering, genreFiltering]);
+  const { filterValues, setFilterValues, filterFunction } = useFiltering([
+    titleFiltering,
+    genreFiltering,
+  ]);
 
   const favouriteMovieQueries = useQueries(
     movieIds.map((movieId) => ({
       queryKey: ["movie", movieId],
       queryFn: () => getMovie(movieId.toString()),
-    }))
+    })),
   );
 
   const favouriteTVQueries = useQueries(
     tvShowIds.map((showId) => ({
       queryKey: ["tvShow", showId],
-      queryFn: () =>
-        getTVShow(showId.toString()),
-    }))
+      queryFn: () => getTVShow(showId.toString()),
+    })),
   );
 
-
-  const isLoading = favouriteMovieQueries.some(
-    (query) => query.isLoading
-  ) || favouriteTVQueries.some(
-    (query) => query.isLoading
-  );
+  const isLoading =
+    favouriteMovieQueries.some((query) => query.isLoading) ||
+    favouriteTVQueries.some((query) => query.isLoading);
 
   if (isLoading) {
     return <Spinner />;
@@ -69,20 +65,11 @@ const FavouriteMoviesPage: React.FC = () => {
 
   const allFavourites = favouriteMovieQueries
     .map((query) => query.data)
-    .filter(
-      (movie): movie is BaseMovieProps => movie !== undefined
-    );
+    .filter((movie): movie is BaseMovieProps => movie !== undefined);
 
-  const favouriteTVShows =
-    favouriteTVQueries
-      .map((query) => query.data)
-      .filter(
-        (
-          show
-        ): show is TVShowProps =>
-          show !== undefined
-      );
-
+  const favouriteTVShows = favouriteTVQueries
+    .map((query) => query.data)
+    .filter((show): show is TVShowProps => show !== undefined);
 
   const displayedMovies = [...filterFunction(allFavourites)].sort((a, b) => {
     if (sortOption === "rating-desc") {
@@ -100,10 +87,7 @@ const FavouriteMoviesPage: React.FC = () => {
     return 0;
   });
 
-  const changeFilterValues = (
-    type: string,
-    value: string
-  ) => {
+  const changeFilterValues = (type: string, value: string) => {
     const changedFilter = {
       name: type,
       value,
@@ -147,27 +131,21 @@ const FavouriteMoviesPage: React.FC = () => {
             Favourite TV Shows
           </Typography>
 
-          <Grid
-            container
-            spacing={2}
-          >
-            {favouriteTVShows.map(
-              (show) => (
-                <Grid item
-                  key={show.id} xs={12} sm={6} md={4} lg={2} xl={2}>
-                  <TVShowCard
-                    show={show}
-                    showFavourite={false}
-                    action={(show: TVShowProps) => (
-                      <>
-                        <RemoveTVFromFavourites {...show} />
-                        <WriteTVReview {...show} />
-                      </>
-                    )}
-                  />
-                </Grid>
-              )
-            )}
+          <Grid container spacing={2}>
+            {favouriteTVShows.map((show) => (
+              <Grid item key={show.id} xs={12} sm={6} md={4} lg={2} xl={2}>
+                <TVShowCard
+                  show={show}
+                  showFavourite={false}
+                  action={(show: TVShowProps) => (
+                    <>
+                      <RemoveTVFromFavourites {...show} />
+                      <WriteTVReview {...show} />
+                    </>
+                  )}
+                />
+              </Grid>
+            ))}
           </Grid>
         </div>
       )}
