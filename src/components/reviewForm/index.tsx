@@ -123,7 +123,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
           render={({ field }) => (
             <TextField
               {...field}
-              sx={{ width: "40ch" }}
+              sx={styles.textField}
               variant="outlined"
               margin="normal"
               required
@@ -149,6 +149,10 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
           render={({ field }) => (
             <TextField
               {...field}
+               sx={{
+            ...styles.textField,
+              width: "100%",
+              }}
               variant="outlined"
               margin="normal"
               required
@@ -169,6 +173,7 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
           render={({ field }) => (
             <TextField
               {...field}
+              sx={styles.textField}
               id="select-rating"
               select
               variant="outlined"
@@ -192,21 +197,34 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
           )}
         />
 
-        <Box>
+        <Box sx={{ marginTop: 2 }}>
           <Button
             type="submit"
             variant="contained"
-            color="primary"
-            sx={styles.submit}
+            sx={{
+              ...styles.submit,
+              backgroundColor: "#ffffff",
+              color: "#111111",
+              "&:hover": {
+                backgroundColor: "#d9d9d9",
+              },
+            }}
           >
             Submit
           </Button>
 
           <Button
             type="button"
-            variant="contained"
-            color="secondary"
-            sx={styles.submit}
+            variant="outlined"
+            sx={{
+              ...styles.submit,
+              color: "#ffffff",
+              borderColor: "#777777",
+              "&:hover": {
+                borderColor: "#ffffff",
+                backgroundColor: "rgba(255,255,255,0.08)",
+              },
+            }}
             onClick={handleReset}
           >
             Reset
