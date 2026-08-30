@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import StarRate from "@mui/icons-material/StarRate";
 import Typography from "@mui/material/Typography";
 
+import NavigationIcon from "@mui/icons-material/Navigation";
+import Fab from "@mui/material/Fab";
+import Drawer from "@mui/material/Drawer";
+import TVShowReviews from "../tvShowReviews";
 interface TVGenre {
   id: number;
   name: string;
@@ -18,6 +22,7 @@ interface TVShowDetailsProps {
   number_of_seasons?: number;
   number_of_episodes?: number;
   status?: string;
+  id: number;
 }
 
 const styles = {
@@ -55,9 +60,25 @@ const styles = {
     fontWeight: 600,
     border: "1px solid rgba(255,255,255,0.12)",
   },
+  fab: {
+  position: "fixed",
+  top: 50,
+  right: 10,
+  backgroundColor: "#18181f",
+  color: "#ffffff",
+  border: "1px solid rgba(255,255,255,0.2)",
+  boxShadow: "none",
+
+  "&:hover": {
+    backgroundColor: "#30303a",
+    boxShadow: "0 8px 20px rgba(0,0,0,0.35)",
+  },
+},
 };
 
 const TVShowDetails: React.FC<TVShowDetailsProps> = (show) => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <Paper sx={styles.detailsPanel}>
       <Typography
@@ -132,8 +153,25 @@ const TVShowDetails: React.FC<TVShowDetailsProps> = (show) => {
         )}
       </Paper>
  
-        
+        <Fab
+  variant="extended"
+  onClick={() => setDrawerOpen(true)}
+  sx={styles.fab}
+>
+  <NavigationIcon sx={{ mr: 1 }} />
+  Reviews
+</Fab>
+
+<Drawer
+  anchor="top"
+  open={drawerOpen}
+  onClose={() => setDrawerOpen(false)}
+>
+  <TVShowReviews id={show.id} />
+</Drawer>
     </Paper>
+
+        
   );
 };
 

@@ -148,6 +148,24 @@ export const getTVShowImages = (id: string | number) => {
     });
 };
 
+export const getTVShowReviews = (id: string | number) => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then((response) => {
+      if (!response.ok)
+        throw new Error(
+          `Unable to fetch TV show reviews. Response status: ${response.status}`
+        );
+
+      return response.json();
+    })
+    .then((json) => json.results)
+    .catch((error) => {
+      throw error;
+    });
+};
+
 export const getTVGenres = () => {
   return fetch(
     `https://api.themoviedb.org/3/genre/tv/list?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
