@@ -102,3 +102,11 @@ export interface DiscoverTVShows {
   total_pages: number;
   total_results: number;
 }
+export interface TVReview {
+  id?: string;
+  author: string;
+  content: string;
+  rating: number;
+  agree: boolean;
+  tvShowId: number;
+}

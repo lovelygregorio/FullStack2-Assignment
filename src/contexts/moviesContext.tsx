@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
-import { BaseMovieProps, Review,  TVShowProps } from "../types/interfaces";
+import React, { useCallback, useEffect, useState } from "react";
+import { BaseMovieProps, Review,  TVShowProps,  TVReview, } from "../types/interfaces";
 
 interface MovieContextInterface {
   favourites: number[];
   mustWatch: number[];
   myReviews: Record<number, Review>;
+  myTVReviews: Record<number, TVReview>;
   tvFavourites: number[];
 
   addToFavourites: (movie: BaseMovieProps) => void;
@@ -15,7 +16,7 @@ interface MovieContextInterface {
   
   addToMustWatch: (movie: BaseMovieProps) => void;
   addReview: (movie: BaseMovieProps, review: Review) => void;
-  
+  addTVReview: (show: TVShowProps, review: TVReview) => void;
 
 }
 
@@ -23,6 +24,7 @@ const initialContextState: MovieContextInterface = {
   favourites: [],
   mustWatch: [],
   myReviews: {},
+  myTVReviews: {},
   tvFavourites: [],
 
   addToFavourites: () => {},
@@ -31,6 +33,7 @@ const initialContextState: MovieContextInterface = {
   addReview: () => {},
   addTVToFavourites: () => {},
   removeTVFromFavourites: () => {},
+  addTVReview: () => {},
 };
 
 export const MoviesContext =
@@ -39,10 +42,22 @@ export const MoviesContext =
 const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const [favourites, setFavourites] = useState<number[]>([]);
+
+ const [favourites, setFavourites] = useState<number[]>(() => {
+  const stored = localStorage.getItem("movieFavourites");
+  return stored ? JSON.parse(stored) : [];
+});
+
   const [mustWatch, setMustWatch] = useState<number[]>([]);
+
   const [myReviews, setMyReviews] = useState<Record<number, Review>>({});
-  const [tvFavourites, setTVFavourites] = useState<number[]>([]);
+  const [myTVReviews, setMyTVReviews] = useState<Record<number, TVReview>>({});
+  
+  const [tvFavourites, setTVFavourites] = useState<number[]>(() => {
+    const stored = localStorage.getItem("tvFavourites");
+  return stored ? JSON.parse(stored) : [];
+});
+
   const addToFavourites = useCallback((movie: BaseMovieProps) => {
     setFavourites((previousFavourites) => {
       if (previousFavourites.includes(movie.id)) {
@@ -52,6 +67,20 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({
       return [...previousFavourites, movie.id];
     });
   }, []);
+
+  useEffect(() => {
+  localStorage.setItem(
+    "movieFavourites",
+    JSON.stringify(favourites)
+  );
+}, [favourites]);
+
+useEffect(() => {
+  localStorage.setItem(
+    "tvFavourites",
+    JSON.stringify(tvFavourites)
+  );
+}, [tvFavourites]);
 
 const addTVToFavourites = useCallback((show: TVShowProps) => {
   setTVFavourites((previousFavourites) => {
@@ -109,11 +138,23 @@ const removeTVFromFavourites = useCallback((show: TVShowProps) => {
     []
   );
 
+  const addTVReview = useCallback(
+  (show: TVShowProps, review: TVReview) => {
+    setMyTVReviews((previousReviews) => ({
+      ...previousReviews,
+      [show.id]: review,
+    }));
+  },
+  []
+);
+
   return (
     <MoviesContext.Provider
       value={{
         favourites,
          tvFavourites,
+        myTVReviews,
+        addTVReview,
         mustWatch,
         myReviews,
         addToFavourites,
