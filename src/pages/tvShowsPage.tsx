@@ -10,26 +10,16 @@ import useFiltering from "../hooks/useFiltering";
 
 import TVShowFilterUI from "../components/tvShowFilterUI";
 import Pagination from "@mui/material/Pagination";
-
+import Spinner from "../components/spinner";
 
 const TVShowsPage: React.FC = () => {
   const [page, setPage] = useState(1);
 
-  const {
-    data,
-    error,
-    isLoading,
-    isError,
-  } = useQuery<DiscoverTVShows, Error>(
+  const { data, error, isLoading, isError } = useQuery<DiscoverTVShows, Error>(
     ["tvShows", page],
-    () => getTVShows(page)
+    () => getTVShows(page),
   );
-  const {
-    data: genreData,
-  } = useQuery(
-    "tvGenres",
-    getTVGenres
-  );
+  const { data: genreData } = useQuery("tvGenres", getTVGenres);
 
   const filters = [
     {
@@ -51,8 +41,8 @@ const TVShowsPage: React.FC = () => {
     },
   ];
 
-  const { filterValues, setFilterValues, filterFunction,
-  } = useFiltering(filters);
+  const { filterValues, setFilterValues, filterFunction } =
+    useFiltering(filters);
 
   const changeFilterValues = (type: "name" | "genre", value: string) => {
     const changedFilter = {
@@ -71,9 +61,7 @@ const TVShowsPage: React.FC = () => {
   const [sortOption, setSortOption] = useState("rating-desc");
 
   const displayedShows = data
-    ? [...filterFunction(data.results)]
-      .slice(0, 18)
-      .sort((a, b) => {
+    ? [...filterFunction(data.results)].slice(0, 18).sort((a, b) => {
         if (sortOption === "rating-desc") {
           return b.vote_average - a.vote_average;
         }
@@ -90,9 +78,8 @@ const TVShowsPage: React.FC = () => {
       })
     : [];
 
-
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <Spinner />;
   }
 
   if (isError) {
@@ -109,7 +96,6 @@ const TVShowsPage: React.FC = () => {
       }}
     >
       <h1>TV Shows</h1>
-
 
       <Grid container spacing={2} sx={{ padding: "20px 0" }}>
         {displayedShows.map((show: TVShowProps) => (

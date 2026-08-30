@@ -4,39 +4,27 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-import {
-  getUpcomingMovies,
-  getOnTheAirTVShows,
-} from "../api/tmdb-api";
+import { getUpcomingMovies, getOnTheAirTVShows } from "../api/tmdb-api";
 
 import MovieCard from "../components/movieCard";
 import TVShowCard from "../components/tvShowCard";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 
-import {
-  BaseMovieProps,
-  TVShowProps,
-} from "../types/interfaces";
+import { BaseMovieProps, TVShowProps } from "../types/interfaces";
 
 const UpcomingMoviesPage: React.FC = () => {
   const {
     data: movies,
     isLoading: moviesLoading,
     isError: moviesError,
-  } = useQuery<BaseMovieProps[], Error>(
-    "upcomingMovies",
-    getUpcomingMovies
-  );
+  } = useQuery<BaseMovieProps[], Error>("upcomingMovies", getUpcomingMovies);
 
   const {
     data: tvShows,
     isLoading: tvLoading,
     isError: tvError,
-  } = useQuery<TVShowProps[], Error>(
-    "onTheAirTVShows",
-    getOnTheAirTVShows
-  );
+  } = useQuery<TVShowProps[], Error>("onTheAirTVShows", getOnTheAirTVShows);
 
   if (moviesLoading || tvLoading) {
     return <Spinner />;
@@ -96,20 +84,9 @@ const UpcomingMoviesPage: React.FC = () => {
           Upcoming Movies
         </Typography>
 
-        <Grid
-          container
-          spacing={3}
-          sx={{ marginBottom: "55px" }}
-        >
+        <Grid container spacing={3} sx={{ marginBottom: "55px" }}>
           {upcomingMovies.map((movie) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={2}
-              key={movie.id}
-            >
+            <Grid item xs={12} sm={6} md={4} lg={2} key={movie.id}>
               <MovieCard
                 movie={movie}
                 action={(movie: BaseMovieProps) => (
@@ -133,14 +110,7 @@ const UpcomingMoviesPage: React.FC = () => {
 
         <Grid container spacing={3}>
           {onTheAirTVShows.map((show) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={2}
-              key={show.id}
-            >
+            <Grid item xs={12} sm={6} md={4} lg={2} key={show.id}>
               <TVShowCard show={show} />
             </Grid>
           ))}

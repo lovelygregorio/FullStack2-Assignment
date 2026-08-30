@@ -9,7 +9,7 @@ import { MovieDetailsProps } from "../types/interfaces";
 
 const WriteReviewPage: React.FC = () => {
   const location = useLocation();
-  const { movieId } = location.state;
+  const movieId = location.state?.movieId;
 
   const {
     data: movie,
@@ -18,8 +18,15 @@ const WriteReviewPage: React.FC = () => {
     isError,
   } = useQuery<MovieDetailsProps, Error>(
     ["movie", movieId],
-    () => getMovie(movieId)
+    () => getMovie(movieId),
+    {
+      enabled: Boolean(movieId),
+    },
   );
+
+  if (!movieId) {
+    return <h1>No movie selected.</h1>;
+  }
 
   if (isLoading) {
     return <Spinner />;

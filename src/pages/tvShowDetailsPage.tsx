@@ -53,10 +53,10 @@ const TVShowDetailsPage: React.FC = () => {
     error,
     isLoading,
     isError,
-  } = useQuery(
-    ["tvShow", id],
-    () => getTVShow(id!)
-  );
+  } = useQuery(["tvShow", id], () => getTVShow(id ?? ""), {
+    enabled: Boolean(id),
+  });
+
   useEffect(() => {
     if (show?.id) {
       getTVShowImages(show.id).then((images) => {
@@ -65,27 +65,26 @@ const TVShowDetailsPage: React.FC = () => {
     }
   }, [show?.id]);
 
-
   const handlePrevious = () => {
     setCurrentImage((prev) =>
-      prev === 0 ? Math.max(images.length - 3, 0) : prev - 1
+      prev === 0 ? Math.max(images.length - 3, 0) : prev - 1,
     );
   };
 
   const handleNext = () => {
-    setCurrentImage((prev) =>
-      prev >= images.length - 3 ? 0 : prev + 1
-    );
+    setCurrentImage((prev) => (prev >= images.length - 3 ? 0 : prev + 1));
   };
 
-  const visibleImages = images.slice(
-    currentImage,
-    currentImage + 3
-  );
+  const visibleImages = images.slice(currentImage, currentImage + 3);
+
+  if (!id) {
+    return <h1>No TV show selected.</h1>;
+  }
 
   if (isLoading) {
     return <Spinner />;
   }
+
   if (isError) {
     return <h1>{(error as Error).message}</h1>;
   }
@@ -94,7 +93,6 @@ const TVShowDetailsPage: React.FC = () => {
     return <h1>TV show not found.</h1>;
   }
   return (
-
     <div style={styles.page}>
       <TVShowHeader
         name={show.name}
@@ -105,6 +103,7 @@ const TVShowDetailsPage: React.FC = () => {
       <div style={styles.container}>
         <div style={styles.imageSection}>
           <IconButton
+            aria-label="previous TV show images"
             onClick={handlePrevious}
             sx={styles.arrowButton}
           >
@@ -126,13 +125,13 @@ const TVShowDetailsPage: React.FC = () => {
           ))}
 
           <IconButton
+            aria-label="next TV show images"
             onClick={handleNext}
             sx={styles.arrowButton}
           >
             <ArrowForwardIosIcon />
           </IconButton>
         </div>
-
 
         <TVShowDetails {...show} />
       </div>

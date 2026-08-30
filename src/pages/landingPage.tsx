@@ -9,6 +9,7 @@ import MovieCard from "../components/movieCard";
 import TVShowCard from "../components/tvShowCard";
 import { BaseMovieProps, TVShowProps } from "../types/interfaces";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import Spinner from "../components/spinner";
 
 const LandingPage: React.FC = () => {
   const {
@@ -24,20 +25,8 @@ const LandingPage: React.FC = () => {
   } = useQuery("topTVShows", getTopTVShows);
 
   if (moviesLoading || tvLoading) {
-    return (
-      <Box
-        sx={{
-          backgroundColor: "#0f0f14",
-          color: "#ffffff",
-          minHeight: "100vh",
-          padding: "40px",
-        }}
-      >
-        Loading...
-      </Box>
-    );
+    return <Spinner />;
   }
-
   if (moviesError || tvError) {
     return (
       <Box

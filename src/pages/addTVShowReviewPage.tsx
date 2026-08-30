@@ -86,6 +86,7 @@ const AddTVShowReviewPage: React.FC = () => {
         }}
       >
         <IconButton
+          aria-label="previous TV show posters"
           onClick={handlePrevious}
           disabled={startIndex === 0}
           sx={{
@@ -112,6 +113,7 @@ const AddTVShowReviewPage: React.FC = () => {
         ))}
 
         <IconButton
+          aria-label="next TV show posters"
           onClick={handleNext}
           disabled={startIndex >= posters.length - 3}
           sx={{
