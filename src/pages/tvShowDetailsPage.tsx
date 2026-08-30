@@ -1,12 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 
-import { getTVShow } from "../api/tmdb-api";
+import { getTVShow, getTVShowImages } from "../api/tmdb-api";
 import TVShowDetails from "../components/tvShowDetails";
+import { MovieImage } from "../types/interfaces";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import TVShowHeader from "../components/headerTVShow";
+
+const styles = {
+  page: {
+    backgroundColor: "#0f0f14",
+    minHeight: "100vh",
+    color: "#ffffff",
+  },
+
+   header: {
+    padding: "20px 30px",
+    backgroundColor: "#18181f",
+    borderBottom: "1px solid rgba(255,255,255,0.1)",
+  },
+  container: {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "30px",
+  },
+
+  title: {
+    margin: 0,
+    fontSize: "2rem",
+  },
+   imageSection: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "18px",
+    flexWrap: "wrap" as const,
+    marginBottom: "40px",
+  },
+  backdrop: {
+    width: "420px",
+    height: "360px",
+    objectFit: "cover" as const,
+    borderRadius: "14px",
+  },
+
+  poster: {
+    width: "430px",
+    height: "360px",
+    objectFit: "cover" as const,
+    borderRadius: "14px",
+ },
+    arrowButton: {
+    backgroundColor: "#24242d",
+    color: "#ffffff",
+    width: "42px",
+    height: "42px",
+    "&:hover": {
+    backgroundColor: "#34343f",
+  },
+},
+};
 
 const TVShowDetailsPage: React.FC = () => {
   const { id } = useParams();
+
+  const [images, setImages] = useState<MovieImage[]>([]);
+const [currentImage, setCurrentImage] = useState(0);
 
   const {
     data: show,
@@ -17,6 +79,32 @@ const TVShowDetailsPage: React.FC = () => {
     ["tvShow", id],
     () => getTVShow(id!)
   );
+    useEffect(() => {
+  if (show?.id) {
+    getTVShowImages(show.id).then((images) => {
+      setImages(images);
+    });
+  }
+}, [show?.id]);
+
+
+const handlePrevious = () => {
+  setCurrentImage((prev) =>
+    prev === 0 ? Math.max(images.length - 3, 0) : prev - 1
+  );
+};
+
+const handleNext = () => {
+  setCurrentImage((prev) =>
+    prev >= images.length - 3 ? 0 : prev + 1
+  );
+};
+
+const visibleImages = images.slice(
+  currentImage,
+  currentImage + 3
+);
+
 
   if (isLoading) {
     return <h1>Loading...</h1>;
@@ -25,33 +113,54 @@ const TVShowDetailsPage: React.FC = () => {
   if (isError) {
     return <h1>{(error as Error).message}</h1>;
   }
+
+  if (!show) {
+    return <h1>TV show not found.</h1>;
+  }
     return (
-  <div
-    style={{
-      display: "flex",
-      gap: "30px",
-      padding: "30px",
-      alignItems: "flex-start",
-    }}
+
+  <div style={styles.page}>
+      <TVShowHeader
+  name={show.name}
+  homepage={show.homepage}
+  tagline={show.tagline}
+/>
+
+     <div style={styles.container}>
+        <div style={styles.imageSection}>
+  <IconButton
+    onClick={handlePrevious}
+    sx={styles.arrowButton}
   >
-    {show?.poster_path && (
-      <img
-        src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
-        alt={show.name}
-        style={{
-          width: "300px",
-          borderRadius: "10px",
-        }}
-      />
-    )}
+    <ArrowBackIosNewIcon />
+  </IconButton>
 
-    <div style={{ flex: 1 }}>
-      <h1>{show?.name}</h1>
+  {visibleImages.map((image) => (
+    <img
+      key={image.file_path}
+      src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
+      alt={show.name}
+      style={{
+        width: "230px",
+        height: "360px",
+        objectFit: "cover",
+        borderRadius: "14px",
+      }}
+    />
+  ))}
 
-      {show && <TVShowDetails {...show} />}
+  <IconButton
+    onClick={handleNext}
+    sx={styles.arrowButton}
+  >
+    <ArrowForwardIosIcon />
+  </IconButton>
+</div>
+         
+
+        <TVShowDetails {...show} />
+      </div>
     </div>
-  </div>
-);
+  );
 };
-
 export default TVShowDetailsPage;
