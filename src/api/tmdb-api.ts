@@ -181,3 +181,56 @@ export const getTVGenres = () => {
       throw error;
     });
 };
+
+export const getTopMovies = () => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  )
+    .then((response) => {
+      if (!response.ok)
+        throw new Error(
+          `Unable to fetch top movies. Response status: ${response.status}`
+        );
+
+      return response.json();
+    })
+    .then((json) => json.results)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getTopTVShows = () => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  )
+    .then((response) => {
+      if (!response.ok)
+        throw new Error(
+          `Unable to fetch top TV shows. Response status: ${response.status}`
+        );
+
+      return response.json();
+    })
+    .then((json) => json.results)
+    .catch((error) => {
+      throw error;
+    });
+};
+export const getOnTheAirTVShows = () => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/on_the_air?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  )
+    .then((response) => {
+      if (!response.ok)
+        throw new Error(
+          `Unable to fetch on-the-air TV shows. Response status: ${response.status}`
+        );
+
+      return response.json();
+    })
+    .then((json) => json.results)
+    .catch((error) => {
+      throw error;
+    });
+};

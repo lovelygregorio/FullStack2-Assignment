@@ -1,53 +1,60 @@
 import React from "react";
-import { useQuery } from "react-query";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useQuery } from "react-query";
 
-import {
-  getUpcomingMovies,
-  getOnTheAirTVShows,
-} from "../api/tmdb-api";
-
+import { getTopMovies, getTopTVShows } from "../api/tmdb-api";
 import MovieCard from "../components/movieCard";
 import TVShowCard from "../components/tvShowCard";
-import Spinner from "../components/spinner";
+import { BaseMovieProps, TVShowProps } from "../types/interfaces";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 
-import {
-  BaseMovieProps,
-  TVShowProps,
-} from "../types/interfaces";
-
-const UpcomingMoviesPage: React.FC = () => {
+const LandingPage: React.FC = () => {
   const {
     data: movies,
     isLoading: moviesLoading,
     isError: moviesError,
-  } = useQuery<BaseMovieProps[], Error>(
-    "upcomingMovies",
-    getUpcomingMovies
-  );
+  } = useQuery("topMovies", getTopMovies);
 
   const {
     data: tvShows,
     isLoading: tvLoading,
     isError: tvError,
-  } = useQuery<TVShowProps[], Error>(
-    "onTheAirTVShows",
-    getOnTheAirTVShows
-  );
+  } = useQuery("topTVShows", getTopTVShows);
 
   if (moviesLoading || tvLoading) {
-    return <Spinner />;
+    return (
+      <Box
+        sx={{
+          backgroundColor: "#0f0f14",
+          color: "#ffffff",
+          minHeight: "100vh",
+          padding: "40px",
+        }}
+      >
+        Loading...
+      </Box>
+    );
   }
 
   if (moviesError || tvError) {
-    return <h1>Error loading upcoming content.</h1>;
+    return (
+      <Box
+        sx={{
+          backgroundColor: "#0f0f14",
+          color: "#ffffff",
+          minHeight: "100vh",
+          padding: "40px",
+        }}
+      >
+        Error loading content.
+      </Box>
+    );
   }
 
-  const upcomingMovies = (movies || []).slice(0, 6);
-  const onTheAirTVShows = (tvShows || []).slice(0, 6);
+  const topMovies = (movies || []).slice(0, 6);
+  const topTVShows = (tvShows || []).slice(0, 6);
 
   return (
     <Box
@@ -72,7 +79,7 @@ const UpcomingMoviesPage: React.FC = () => {
             marginBottom: "8px",
           }}
         >
-          Upcoming
+          Welcome to LULU PRIME
         </Typography>
 
         <Typography
@@ -82,7 +89,7 @@ const UpcomingMoviesPage: React.FC = () => {
             marginBottom: "40px",
           }}
         >
-          Discover upcoming movies and TV shows currently on the air.
+          Discover top-rated movies and TV shows.
         </Typography>
 
         <Typography
@@ -93,28 +100,17 @@ const UpcomingMoviesPage: React.FC = () => {
             marginBottom: "22px",
           }}
         >
-          Upcoming Movies
+          Top Movies
         </Typography>
 
-        <Grid
-          container
-          spacing={3}
-          sx={{ marginBottom: "55px" }}
-        >
-          {upcomingMovies.map((movie) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={2}
-              key={movie.id}
-            >
+        <Grid container spacing={3} sx={{ marginBottom: "55px" }}>
+          {topMovies.map((movie: BaseMovieProps) => (
+            <Grid item xs={12} sm={6} md={4} lg={2} key={movie.id}>
               <MovieCard
-                movie={movie}
-                action={(movie: BaseMovieProps) => (
-                  <AddToFavouritesIcon {...movie} />
-                )}
+            movie={movie}
+              action={(movie: BaseMovieProps) => (
+            <AddToFavouritesIcon {...movie} />
+               )}
               />
             </Grid>
           ))}
@@ -128,19 +124,12 @@ const UpcomingMoviesPage: React.FC = () => {
             marginBottom: "22px",
           }}
         >
-          On The Air TV Shows
+          Top TV Shows
         </Typography>
 
         <Grid container spacing={3}>
-          {onTheAirTVShows.map((show) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={2}
-              key={show.id}
-            >
+          {topTVShows.map((show: TVShowProps) => (
+            <Grid item xs={12} sm={6} md={4} lg={2} key={show.id}>
               <TVShowCard show={show} />
             </Grid>
           ))}
@@ -150,4 +139,4 @@ const UpcomingMoviesPage: React.FC = () => {
   );
 };
 
-export default UpcomingMoviesPage;
+export default LandingPage;
