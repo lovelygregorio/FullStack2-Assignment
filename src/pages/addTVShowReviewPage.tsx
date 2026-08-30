@@ -20,22 +20,17 @@ const AddTVShowReviewPage: React.FC = () => {
     data: show,
     isLoading,
     isError,
-  } = useQuery(
-    ["tvShow", tvShowId],
-    () => getTVShow(tvShowId.toString()),
-    {
-      enabled: Boolean(tvShowId),
-    }
-  );
+  } = useQuery(["tvShow", tvShowId], () => getTVShow(tvShowId.toString()), {
+    enabled: Boolean(tvShowId),
+  });
 
   const { data: images } = useQuery(
     ["tvShowImages", tvShowId],
     () => getTVShowImages(tvShowId.toString()),
     {
       enabled: Boolean(tvShowId),
-    }
+    },
   );
-
 
   if (!tvShowId) {
     return <h2>No TV show selected.</h2>;
@@ -51,27 +46,17 @@ const AddTVShowReviewPage: React.FC = () => {
 
   const posters = images || [];
 
-
-  const visiblePosters = posters.slice(
-    startIndex,
-    startIndex + 3
-  );
+  const visiblePosters = posters.slice(startIndex, startIndex + 3);
 
   const handlePrevious = () => {
-    setStartIndex((previous) =>
-      Math.max(previous - 1, 0)
-    );
+    setStartIndex((previous) => Math.max(previous - 1, 0));
   };
 
   const handleNext = () => {
     setStartIndex((previous) =>
-      Math.min(
-        previous + 1,
-        Math.max(posters.length - 3, 0)
-      )
+      Math.min(previous + 1, Math.max(posters.length - 3, 0)),
     );
   };
-
 
   return (
     <Box
@@ -111,31 +96,24 @@ const AddTVShowReviewPage: React.FC = () => {
           <ArrowBackIosNewIcon />
         </IconButton>
 
-        {visiblePosters.map(
-          (
-            image: { file_path: string },
-            index: number
-          ) => (
-            <Box
-              key={`${image.file_path}-${index}`}
-              component="img"
-              src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
-              alt={`${show.name} poster`}
-              sx={{
-                width: "190px",
-                height: "285px",
-                objectFit: "cover",
-                borderRadius: "8px",
-              }}
-            />
-          )
-        )}
+        {visiblePosters.map((image: { file_path: string }, index: number) => (
+          <Box
+            key={`${image.file_path}-${index}`}
+            component="img"
+            src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
+            alt={`${show.name} poster`}
+            sx={{
+              width: "190px",
+              height: "285px",
+              objectFit: "cover",
+              borderRadius: "8px",
+            }}
+          />
+        ))}
 
         <IconButton
           onClick={handleNext}
-          disabled={
-            startIndex >= posters.length - 3
-          }
+          disabled={startIndex >= posters.length - 3}
           sx={{
             color: "#ffffff",
             backgroundColor: "rgba(255,255,255,0.1)",
