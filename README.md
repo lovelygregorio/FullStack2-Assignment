@@ -6,6 +6,7 @@ LULU PRIME is a React and TypeScript single-page application developed for the F
 
 Application is deployed on Vercel
 https://luluprime.vercel.app/
+Youtube Demo url: https://youtu.be/aXZ9D62NQAA
 
 ## Project Origin
 
